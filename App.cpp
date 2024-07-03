@@ -1,12 +1,14 @@
+#include "app.h"
 #include <iostream>
 
-void doSomething() {
+int app(int x, int y) {
+	std::cout << "Enter a number: ";
+	int x{};
+	std::cin >> x;
 
-	#ifdef PRINT_MEOW "meow printed"
-		std::cout << PRINT_MEOW;
-	#endif
+	std::cout << "Enter another number: ";
+	int y{};
+	std::cin >> y;
 
-	#ifndef PRINT_MEOW
-		std::cout << "meow not printed";
-	#endif
+	return x + y;
 }
