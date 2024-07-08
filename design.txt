@@ -1,0 +1,30 @@
+/*
+DESIGN STEPS
+1st step define your goal                                                  
+2nd step define problems/requirements
+3rd step define tools/target/backup-plan
+4th step break down problems
+5th step define sequence of events
+
+IMPLEMENTATION STEPS
+1st implement main function
+2nd implement each function
+3rd final testing
+-------------------------------------
+  AGAIN
+  
+Design:
+  goal
+  problems
+  prep:tools/target/backup
+  break down problems
+  hierarchy
+
+Implementation:
+  main
+  other functions
+  test
+*/
+
+
+    
