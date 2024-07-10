@@ -1,29 +1,40 @@
 #include <iostream>
 
-bool isPrime(int x)
+int charAsInt(char ch)
 {
-    if (x == 2) // if user entered 2, the digit is prime
-        return true;
-    else if (x == 3) // if user entered 3, the digit is prime
-        return true;
-    else if (x == 5) // if user entered 5, the digit is prime
-        return true;
-    else if (x == 7) // if user entered 7, the digit is prime
-        return true;
+	return ch;
+}
 
-    return false; // if the user did not enter 2, 3, 5, 7, the digit must not be prime
+int getInt(int ch)
+{
+	return ch;
 }
 
 int main()
 {
-    std::cout << "Enter a number 0 through 9: ";
-    int x{};
-    std::cin >> x;
+	std::cout << "Enter a single character: ";
+	char ch{};
+	std::cin >> ch;
+	std::cout << "You entered '" << ch << "', which has ASCII code " << static_cast<int>(ch) << ".\n";
 
-    if (isPrime(x))
-        std::cout << "The digit is prime\n";
-    else
-        std::cout << "The digit is not prime\n";
+	//implicit 1
+	int implicit1{ ch };
+	std::cout << "which has ASCII code " << implicit1 << ".\n";
 
-    return 0;
+	//implicit 2
+	std::cout << "which has ASCII code " << charAsInt(ch) << ".\n";
+
+	//implicit 3
+	std::cout << "which has ASCII code " << getInt(ch) << ".\n";
+	return 0;
+
 }
+
+/*
+explicit type conversion (favored) using static_cast<type>(identifier)
+implicit type conversion (unfavored) using:
+1)new variable type int & store a char in it
+2) a function to return the char variable as an int
+3) a function that performs the conversion at the point where 
+   the argument passes its value to the function parameter 
+*/
