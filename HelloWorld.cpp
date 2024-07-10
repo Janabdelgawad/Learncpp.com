@@ -1,37 +1,29 @@
 #include <iostream>
-int userInput()
-{
-	std::cout << "Enter an integer between 0 & 9: ";
-	int input{};
-	std::cin >> input;
-	return input;
-}
 
-int isPrime(int x)
+bool isPrime(int x)
 {
-    if (x == 2) 
+    if (x == 2) // if user entered 2, the digit is prime
         return true;
-    else if (x == 3) 
+    else if (x == 3) // if user entered 3, the digit is prime
         return true;
-    else if (x == 5) 
+    else if (x == 5) // if user entered 5, the digit is prime
         return true;
-    else if (x == 7) 
+    else if (x == 7) // if user entered 7, the digit is prime
         return true;
 
-    return false; 
+    return false; // if the user did not enter 2, 3, 5, 7, the digit must not be prime
 }
 
 int main()
 {
-	int x{ userInput() };
-    int y{ isPrime(x) };
-    if (y)
-    {
-        std::cout << "prime.\n";
-    }
+    std::cout << "Enter a number 0 through 9: ";
+    int x{};
+    std::cin >> x;
+
+    if (isPrime(x))
+        std::cout << "The digit is prime\n";
     else
-    {
-        std::cout << "not prime.";
-    }
-	return 0;
+        std::cout << "The digit is not prime\n";
+
+    return 0;
 }
