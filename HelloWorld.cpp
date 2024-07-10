@@ -32,6 +32,11 @@ int userInput()
 	}
 }
 
+void a()
+{
+	b();
+}
+
 int main()
 {
 	int x{ userInput() };
