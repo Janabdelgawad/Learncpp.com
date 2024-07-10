@@ -31,7 +31,6 @@ int userInput()
 		return false;
 	}
 }
-
 int main()
 {
 	int x{ userInput() };
