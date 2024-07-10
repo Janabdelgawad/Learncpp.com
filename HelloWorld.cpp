@@ -1,5 +1,3 @@
-// that can only be divided evenly by 1 and itself.
-
 #include <iostream>
 int userInput()
 {
@@ -36,15 +34,13 @@ int userInput()
 int main()
 {
 	int x{ userInput() };
-	if (x)
+	if (userInput)
 	{
-		std::cout << "The digit is prime.\n";
+		std::cout << "This digit is prime.\n";
 	}
 	else
 	{
-		std::cout << "The digit is not prime.\n";
+		std::cout << "this digit is not prime.\n";
 	}
 	return 0;
 }
-
-
