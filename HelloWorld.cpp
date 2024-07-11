@@ -1,29 +1,57 @@
+
+// The program computes the answer on the two numbers the user entered
+// and prints the results.
+// If the user enters an invalid symbol,
+// the program should print nothing.
+
+//Example of program :
+/*
+Enter a double value : 6.2
+Enter a double value : 5
+Enter + , -, *, or / : *
+6.2 * 5 is 31
+*/
 #include <iostream>
-//return passed char as an int
-int charToInt(char x)
+double userInput()
 {
-	return x;
+	std::cout << "Enter a double value: ";
+	double input{};
+	std::cin >> input;
+	return input;
 }
-//conversion happens when argument is copied to the called function's parameter
-int charThroughIntToInt(int x)
+
+char userOperator()
 {
-	return x;
+	std::cout << "Enter + , -, *, or / : ";
+	char input{};
+	std::cin >> input;
+	return input;
 }
+
+double result(double x, double y, char z)
+{
+	if (z == '+')
+		return x + y;
+
+	else if (z == '-')
+		return x - y;
+
+	else if (z == '*')
+		return x * y;
+
+	else if (z == '/')
+		return x / y;
+
+	return 0;
+}
+
 int main()
 {
-	char ch{ 'a' };
-	std::cout << "NORMAL" << '\t' << "ASCII" << '\n';
-	//didnt want to take input from user, had to check theyre the same value when outputted as expected
-	std::cout << ch << '\t' << static_cast<int>(ch) << '\n';
-
-	//implicit1
-	int charToIntVariable{ ch };
-	std::cout << ch << '\t' << charToIntVariable << '\n';
-
-	//implicit2
-	std::cout << ch << '\t' << charToInt(ch) << '\n';
-
-	//implicit3 
-	std::cout << ch << '\t' << charThroughIntToInt(ch) << '\n';
+	double x{ userInput() };
+	double y{ userInput() };
+	char z{ userOperator() };
+	double print{ result(x, y, z) };
+	
+	std::cout << x << ' ' << z << ' ' << y << " is " << print;
 	return 0;
 }
