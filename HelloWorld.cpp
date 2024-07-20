@@ -1,124 +1,64 @@
+/*
+Write a program that asks for the name and age of two people, then prints which person is older.
+
+Here is the sample output from one run of the program :
+
+Enter the name of person #1: John Bacon
+Enter the age of John Bacon : 37
+Enter the name of person #2: David Jenkins
+Enter the age of David Jenkins : 44
+David Jenkins(age 44) is older than John Bacon(age 37).
+*/
+
 #include <iostream>
+#include <string>
+#include <string_view>
 
-
-/* Question 4 char x supposed to be int x 
-
-int readNumber()
+//string not string_view because we are receiving input and need to store it
+std::string userName(int userNumber)
 {
-	std::cout << "Please enter a number: ";
-	int x{};
-	std::cin >> x;
-
-	return x;
+	std::cout << "Enter the name of person #" << userNumber << ": ";
+	std::string name{};
+	//getline accepts multiple texts, std::ws ignores white spaces 
+	std::getline(std::cin >> std::ws, name);
+	return name;
 }
 
-void writeAnswer(int x)
+//string_view was used to output the name only (for read-only purposes)
+int userAge(std::string_view name)
 {
-	std::cout << "The sum is: " << x << '\n';
+	std::cout << "Enter the age of " << name << " : ";
+	int age{};
+	std::cin >> age;
+	return age;
+}
+
+void printOlderUser(std::string_view name1, int age1, std::string_view name2, int age2)
+{
+	//conditional operator "?:" used because they're only 2 statements
+	int older{0};
+	(age1 > age2) ? older = age1: older = age2;
+
+	//used if-else instead to print because ?: didn't work with std::cout (don't know why)
+	if (older == age1)
+		std::cout << name1 << " (age " << age1 << ") is older than " << name2 << " (age " << age2 << ").\n";
+	else
+		std::cout << name2 << " (age " << age2 << ") is older than " << name1 << " (age " << age1 << ").\n";
 }
 
 int main()
 {
-	int x{ readNumber() };
-	int y{ readNumber() };
-	writeAnswer(x + y);
+	//const to prevent them from changing later
 
+	//store first user's name and age 
+	const std::string user1{ userName(1) };
+	const int user1Age{ userAge(user1) };
+
+	//store second user's name and age
+	const std::string user2{ userName(2) };
+	const int user2Age{ userAge(user2) };
+
+	//print which user is older
+	printOlderUser(user1, user1Age, user2, user2Age);
 	return 0;
 }
-*/
-
-
-
-
-
-
-
-
-
-/* Question 3, the call stack when running the cursor at line 4 is: d b a main
-void d()
-{ // here
-}
-
-void c()
-{
-}
-
-void b()
-{
-	c();
-	d();
-}
-
-void a()
-{
-	b();
-}
-
-int main()
-{
-	a();
-
-	return 0;
-}
-*/
-
-
-
-
-
-
-
-
-/* Question 2
-int readNumber()
-{
-	std::cout << "Please enter a number: ";
-	int x{};
-	std::cin >> x;
-	return x;
-}
-
-void writeAnswer(int x)
-{
-	std::cout << "The quotient is: " << x << '\n';
-}
-
-int main()
-{
-	int x{ };
-	int y{ };
-	x = readNumber();
-	y = readNumber();
-	writeAnswer(x / y);
-
-	return 0;
-}
-*/
-
-
-
-
-/*	Question 1
-int readNumber(int x)
-{
-	std::cout << "Please enter a number: ";
-	std::cin >> x;
-	return x;
-}
-
-void writeAnswer(int x)
-{
-	std::cout << "The sum is: " << x << '\n';
-}
-
-int main()
-{
-	int x{};
-	x = readNumber(x);
-	x = x + readNumber(x);
-	writeAnswer(x);
-
-	return 0;
-}
-*/
