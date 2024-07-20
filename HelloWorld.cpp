@@ -1,37 +1,64 @@
 /*
-function vs member functions
-length(name) vs   name.length()
-member function means that it is part of a library(std::string)
+Write a program that asks for the name and age of two people, then prints which person is older.
 
-when using std::string when receiving input 
-use std::getline(std::cin >> std::ws, "your string here");
-ws-> ignores white spaces 
-getline -> read a full line of input (not just the first thing like what std::cin does alone)
-constexpr cant use std::string in versions < ++20/23
-don't pass strings by value use std::stringview
+Here is the sample output from one run of the program :
 
+Enter the name of person #1: John Bacon
+Enter the age of John Bacon : 37
+Enter the name of person #2: David Jenkins
+Enter the age of David Jenkins : 44
+David Jenkins(age 44) is older than John Bacon(age 37).
 */
 
 #include <iostream>
 #include <string>
+#include <string_view>
+
+//string not string_view because we are receiving input and need to store it
+std::string userName(int userNumber)
+{
+	std::cout << "Enter the name of person #" << userNumber << ": ";
+	std::string name{};
+	//getline accepts multiple texts, std::ws ignores white spaces 
+	std::getline(std::cin >> std::ws, name);
+	return name;
+}
+
+//string_view was used to output the name only (for read-only purposes)
+int userAge(std::string_view name)
+{
+	std::cout << "Enter the age of " << name << " : ";
+	int age{};
+	std::cin >> age;
+	return age;
+}
+
+void printOlderUser(std::string_view name1, int age1, std::string_view name2, int age2)
+{
+	//conditional operator "?:" used because they're only 2 statements
+	int older{0};
+	(age1 > age2) ? older = age1: older = age2;
+
+	//used if-else instead to print because ?: didn't work with std::cout (don't know why)
+	if (older == age1)
+		std::cout << name1 << " (age " << age1 << ") is older than " << name2 << " (age " << age2 << ").\n";
+	else
+		std::cout << name2 << " (age " << age2 << ") is older than " << name1 << " (age " << age1 << ").\n";
+}
 
 int main()
 {
-	//get input(user's name)
-	std::cout << "Enter your full name: ";
-	std::string name{};
-	std::getline(std::cin >> std::ws, name); //read a full line of text into name
+	//const to prevent them from changing later
 
-	//count user's name length
-	int castedNameLength{static_cast<int>(name.length())}; //name.length() is unsigned, convert it to a signed value
+	//store first user's name and age 
+	const std::string user1{ userName(1) };
+	const int user1Age{ userAge(user1) };
 
-	//get input(user's age)
-	std::cout << "Enter your age: ";
-	int age{}; // is signed
-	std::cin >> age;
+	//store second user's name and age
+	const std::string user2{ userName(2) };
+	const int user2Age{ userAge(user2) };
 
-	//output(user's name length & age)
-	std::cout << "Your age + length of name is: " << castedNameLength + age << '\n';
-
+	//print which user is older
+	printOlderUser(user1, user1Age, user2, user2Age);
 	return 0;
 }
