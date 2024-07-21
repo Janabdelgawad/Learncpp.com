@@ -1,36 +1,30 @@
 #include <iostream>
 
-constexpr std::string_view getQuantityPhrase(int quantity)
+int getInt()
 {
-    if (quantity < 0)
-        return "negative";
-    else if (quantity == 0)
-        return "no";
-    else if (quantity == 1)
-        return "a single";
-    else if (quantity == 2)
-        return "a couple of";
-    else if (quantity == 3)
-        return "a few";
-    else
-        return "many";
+	std::cout << "Enter an integer: ";
+	int input{};
+	std::cin >> input;
+	return input;
 }
 
-constexpr std::string_view getApplesPluralized(int quantity)
+constexpr bool isEven(int num)
 {
-    return (quantity == 1) ? "apple" : "apples";
+	return ((num % 2) == 0) ? true : false;
+}
+
+void printNum(bool x, int num)
+{
+	if (x)
+		std::cout << num << " is even";
+	else
+		std::cout << num << " is odd";
 }
 
 int main()
 {
-    constexpr int maryApples{ 3 };
-    std::cout << "Mary has " << getQuantityPhrase(maryApples) << ' ' << getApplesPluralized(maryApples) << ".\n";
-
-    std::cout << "How many apples do you have? ";
-    int numApples{};
-    std::cin >> numApples;
-
-    std::cout << "You have " << getQuantityPhrase(numApples) << ' ' << getApplesPluralized(numApples) << ".\n";
-
-    return 0;
+	const int num{ getInt() };
+	const bool evenOrOdd{ isEven(num) };
+	printNum(evenOrOdd, num);
+	return 0;
 }
