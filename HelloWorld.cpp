@@ -1,42 +1,53 @@
 /*
-Variable's
-----------
-Scope: where the variable is seen/used in code
-Duration: the rules that govern when a variable is created&destroyed
-Lifetime: the time between creation&destruction
 
-
-The program output should match the following:
-Enter an integer: 4
-Enter a larger integer: 2
-Swapping the values
-The smaller value is 2
-The larger value is 4
+For the division operator,
+do an integer division, 
+and don’t worry about divide by zero.
 */
 #include <iostream>
+
+int getInteger()
+{
+	std::cout << "Enter a number: ";
+	int input{};
+	std::cin >> input;
+	return input;
+}
+char getChar()
+{
+	std::cout << "Enter a mathematical operator (+, _, *, /, %): ";
+	char input{};
+	std::cin >> input;
+	return input;
+}
+
+int calculate(int x, int y, char z)
+{
+	switch (z)
+	{
+	case '+':
+		return x + y;
+	case '-':
+		return x - y;
+	case '*':
+		return x * y;
+	case '/':
+		return x / y;
+	case '%':
+		return x % y;
+	default:
+		std::cout << "Error message: wrong operator.\n";
+		return 0;
+	}
+}
+
 int main()
 {
-	//larger and smaller are created
-	std::cout << "Enter an integer: ";
-	int smaller{};
-	std::cin >> smaller;
-	std::cout << "Enter a larger integer: ";
-	int larger{};
-	std::cin >> larger;
+	int num1{ getInteger() };
+	int num2{ getInteger() };
+	int character{ getChar() };
 
-	//if wrong order was entered
-	if (larger < smaller)
-	{
-		std::cout << "Swapping the values\n";
-
-		//temp created
-		int temp{ smaller };
-		smaller = larger;
-		larger = temp;
-	}	//temp destroyed
-
-	std::cout << "The smaller value is: " << smaller << '\n';
-	std::cout << "The larger value is: " << larger << '\n';
-
+	int result{ calculate(num1, num2, character) };
+	std::cout << num1 << ' ' << character << ' ' << num2 << " is " << result << '\n';
 	return 0;
-}	//larger and smaller are destroyed
+}
