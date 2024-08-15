@@ -2,26 +2,17 @@
 
 int main()
 {
-	int count{ 1 };
-	while (count <= 50)
+	int outer{ 5 };
+	while (outer >= 1)
 	{
-		//add zero before numbers less than 10, ex: 01, 02, 03,...
-		if (count < 10)
+		int inner{ outer };
+		while (inner >= 1)
 		{
-			std::cout << '0';
+			std::cout << inner << ' ';
+			--inner;
 		}
-
-		//print a number and space each time
-		std::cout << count << ' ';
-
-		//new line after every 10 numbers
-		if (count % 10 == 0)
-		{
-			std::cout << '\n';
-		}
-
-		//increase number
-		count++;
+		std::cout << '\n';
+		--outer;
 	}
 	return 0;
 }
