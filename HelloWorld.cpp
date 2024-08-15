@@ -1,53 +1,27 @@
-/*
-
-For the division operator,
-do an integer division, 
-and don’t worry about divide by zero.
-*/
 #include <iostream>
-
-int getInteger()
-{
-	std::cout << "Enter a number: ";
-	int input{};
-	std::cin >> input;
-	return input;
-}
-char getChar()
-{
-	std::cout << "Enter a mathematical operator (+, _, *, /, %): ";
-	char input{};
-	std::cin >> input;
-	return input;
-}
-
-int calculate(int x, int y, char z)
-{
-	switch (z)
-	{
-	case '+':
-		return x + y;
-	case '-':
-		return x - y;
-	case '*':
-		return x * y;
-	case '/':
-		return x / y;
-	case '%':
-		return x % y;
-	default:
-		std::cout << "Error message: wrong operator.\n";
-		return 0;
-	}
-}
 
 int main()
 {
-	int num1{ getInteger() };
-	int num2{ getInteger() };
-	int character{ getChar() };
+	int count{ 1 };
+	while (count <= 50)
+	{
+		//add zero before numbers less than 10, ex: 01, 02, 03,...
+		if (count < 10)
+		{
+			std::cout << '0';
+		}
 
-	int result{ calculate(num1, num2, character) };
-	std::cout << num1 << ' ' << character << ' ' << num2 << " is " << result << '\n';
+		//print a number and space each time
+		std::cout << count << ' ';
+
+		//new line after every 10 numbers
+		if (count % 10 == 0)
+		{
+			std::cout << '\n';
+		}
+
+		//increase number
+		count++;
+	}
 	return 0;
 }
