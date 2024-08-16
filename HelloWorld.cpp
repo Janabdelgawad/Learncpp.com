@@ -1,18 +1,28 @@
 #include <iostream>
 
+
 int main()
 {
-	int outer{ 5 };
-	while (outer >= 1)
+	int outer{ 1 };
+	while (outer <= 5)
 	{
-		int inner{ outer };
+		int inner{ 5 };
 		while (inner >= 1)
 		{
-			std::cout << inner << ' ';
+			if (inner <= outer)
+			{
+				std::cout << inner << ' ';
+			}
+			else
+			{
+				std::cout << "  ";
+			}
 			--inner;
 		}
+		++outer;
 		std::cout << '\n';
-		--outer;
 	}
 	return 0;
 }
+
+
