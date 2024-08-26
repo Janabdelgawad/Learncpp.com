@@ -1,60 +1,58 @@
 #include <iostream>
-//Write a for-loop that prints every even number from 0 to 20.
-void printEven()
+#include <cstdlib>
+int randomNumberGenerator()
 {
-	for (int i{ 0 }; i <= 20; i += 2)
-	{
-		std::cout << i << ' ';
-	}
-	std::cout << '\n';
+	return 1 + rand() % 100;
 }
-//write a function that returns the sum of all the numbers from 1 to value.
-void sumTo(int value)
+//function to ask the user if they want to play again
+bool playAgain()
 {
-	int f{ 0 };
-	for (int i{ 1 }; i <= value;++i)
+	std::cout << "\nWould you like to play again (y/n)?\n";
+	char input{};
+	std::cin >> input;
+	while (input != 'y' && input != 'n')
 	{
-		f+= i;
+		std::cout << "Would you like to play again (y/n)?\n";
+		std::cin >> input;
 	}
-	std::cout << f << '\n';
+	return input == 'y';
 }
-/*
-replace number divisible only by three with “fizz”, 
-number divisible only by five with“buzz”, 
-number divisible by both 3 and 5 with “fizzbuzz”.
-*/
-void fizzbuzz(int countUpTo)
+//check the user's guess
+void Answer(int user, int answer)
 {
-	for (int i{ 1 }; i <= countUpTo; ++i)
-	{
-		bool used{ false };
-		if (i % 3 == 0)
-		{
-			std::cout << "fizz";
-			used = true;
-		}
-		if (i % 5 == 0)
-		{
-			std::cout << "buzz";
-			used = true;
-		}
-		if (i % 7 == 0)
-		{
-			std::cout << "pop";
-			used = true;
-		}
-		if (!used) std::cout << i;
+		if (user < answer) std::cout << "Your guess is too low.";
+		else if (user > answer) std::cout << "Your guess is too high.";
+		else std::cout << "Correct! You win!";
+}
+//function to handle the user's trials
+int userTrial(int answer)
+{
+	int input{};
+	int i{ 1 };
 
-		std::cout << '\n';
+	std::cout << "Let's play a game. I'm thinking of a number between 1 and 100. You have 7 tries to guess what it is.\n";
+	for (; i <= 7; i++)
+	{
+		std::cout << "\nGuess #" << i << ": ";
+		std::cin >> input;
+		if (input == answer)
+		{
+			Answer(input, answer);
+			return input;
+		}
+		Answer(input, answer);
 	}
+	std::cout << "\nSorry, you lose. The correct number was " << answer;
+	return input;
 }
-
 int main()
 {
-	printEven();
-	sumTo(5);
-	fizzbuzz(150);
+	do
+	{
+		int randomNumber{ randomNumberGenerator() };
+		int userNumber{ userTrial(randomNumber) };
+	} while (playAgain());
+
+	std::cout << "Thank you for playing!\n";
 	return 0;
 }
-
-
