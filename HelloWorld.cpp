@@ -1,5 +1,40 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
+/*
+
+void mySol(int& x, int& y)
+{
+	(x <= y) ? x : y;
+	if(x) std::swap(x, y);
+}
+void sort2(int& x, int& y)
+{
+	if (x <= y) return;
+	std::swap(x, y);
+}
+
+int main()
+{
+	int x{ 7 };
+	int y{ 5 };
+
+	std::cout << x << ' ' << y << '\n'; // should print 7 5
+
+	sort2(x, y); // make sure sort works when values need to be swapped
+	std::cout << x << ' ' << y << '\n'; // should print 5 7
+
+	sort2(x, y); // make sure sort works when values don't need to be swapped
+	std::cout << x << ' ' << y << '\n'; // should print 5 7
+
+	return 0;
+}
+
+
+
+
+
+/*
 void printByAddress(const std::string* ptr)
 {
 	std::cout << *ptr << '\n';
@@ -14,7 +49,6 @@ int main()
 	std::string* ptr{ &str };
 	return 0;
 }
-
 
 
 /*
