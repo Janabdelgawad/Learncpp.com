@@ -1,87 +1,119 @@
 #include <iostream>
-#include <limits>
-#include <cstdlib>
+#include <string>
+#include <algorithm>
+/*
 
-void ignoreLine()
+void mySol(int& x, int& y)
 {
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	(x <= y) ? x : y;
+	if(x) std::swap(x, y);
 }
-
-int randomNumberGenerator()
+void sort2(int& x, int& y)
 {
-    return 1 + rand() % 100;
-}
-
-bool playAgain()
-{
-    std::cout << "\nWould you like to play again (y/n)?\n";
-    char input{};
-    std::cin >> input;
-    ignoreLine(); // Ignore any extra characters after the input
-    while (input != 'y' && input != 'n')
-    {
-        std::cout << "Invalid input. Would you like to play again (y/n)?\n";
-        std::cin >> input;
-        ignoreLine(); // Ignore any extra characters after the input
-    }
-    return input == 'y';
-}
-
-void Answer(int user, int answer)
-{
-    if (user < answer) std::cout << "Your guess is too low.\n";
-    else if (user > answer) std::cout << "Your guess is too high.\n";
-    else std::cout << "Correct! You win!\n";
-}
-
-int userTrial(int answer)
-{
-    int input{};
-    int i{ 1 };
-
-    std::cout << "Let's play a game. I'm thinking of a number between 1 and 100. You have 7 tries to guess what it is.\n";
-    for (; i <= 7; i++)
-    {
-        std::cout << "\nGuess #" << i << ": ";
-        std::cin >> input;
-
-        if (!std::cin)
-        {
-            std::cin.clear();
-            ignoreLine();
-            std::cout << "Invalid input. Please enter a number between 1 and 100.\n";
-            i--; // Decrement the counter to give the user another chance
-            continue;
-        }
-
-        if (input < 1 || input > 100)
-        {
-            std::cout << "Out of bounds. Please enter a number between 1 and 100.\n";
-            ignoreLine();
-            i--; // Decrement the counter to give the user another chance
-            continue;
-        }
-
-        if (input == answer)
-        {
-            Answer(input, answer);
-            return input;
-        }
-        Answer(input, answer);
-    }
-    std::cout << "\nSorry, you lose. The correct number was " << answer << ".\n";
-    ignoreLine();
-    return input;
+	if (x <= y) return;
+	std::swap(x, y);
 }
 
 int main()
 {
-    do
-    {
-        int randomNumber{ randomNumberGenerator() };
-        int userNumber{ userTrial(randomNumber) };
-    } while (playAgain());
+	int x{ 7 };
+	int y{ 5 };
 
-    std::cout << "Thank you for playing!\n";
-    return 0;
+	std::cout << x << ' ' << y << '\n'; // should print 7 5
+
+	sort2(x, y); // make sure sort works when values need to be swapped
+	std::cout << x << ' ' << y << '\n'; // should print 5 7
+
+	sort2(x, y); // make sure sort works when values don't need to be swapped
+	std::cout << x << ' ' << y << '\n'; // should print 5 7
+
+	return 0;
 }
+
+
+
+
+
+/*
+void printByAddress(const std::string* ptr)
+{
+	std::cout << *ptr << '\n';
+}
+int main()
+{
+	std::string str{ "Hello World!" };
+	printByAddress(&str);
+
+	std::string* ptr { &str };
+	printByAddress(ptr);
+	std::string* ptr{ &str };
+	return 0;
+}
+
+
+/*
+int main()
+{
+	int x{ 5 };
+	int* ptr{ &x };
+
+	if (ptr == nullptr) std::cout << "ptr is null\n";
+	else std::cout << "ptr is non-null\n";
+
+	int* nullPtr{};
+	std::cout << "nullPtr is: " << (nullPtr == nullptr ? "nullPtr is null" : "nullPtr is non-null");
+
+	return 0;
+}
+
+int main()
+{
+	int x{ 5 };
+	std::cout << x << '\n';
+
+	int* ptr{ &x };
+	std::cout << *ptr << '\n';
+	return 0;
+}
+
+template<typename T>
+T add(T x, T y)
+{
+	return x + y;
+}
+
+int main()
+{
+	std::cout << add(2, 3) << '\n';
+	std::cout << add(1.2, 3.4) << '\n';
+	return 0;
+}
+--------------------------
+template <typename T>
+T mult(T x, int y)
+{
+	return x * y;
+}
+
+int main()
+{
+	std::cout << mult(2, 3) << '\n';
+	std::cout << mult(1.2, 3) << '\n';
+
+	return 0;
+}
+
+template<typename T, typename U>
+auto sub(T x, U y)
+{
+	return x - y;
+}
+int main()
+{
+	std::cout << sub(3, 2) << '\n';
+	std::cout << sub(3.5, 2) << '\n';
+	std::cout << sub(4, 1.5) << '\n';
+
+	return 0;
+}
+*/
