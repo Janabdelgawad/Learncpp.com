@@ -1,5 +1,47 @@
 #include <iostream>
+#include <string>
+void printByAddress(const std::string* ptr)
+{
+	std::cout << *ptr << '\n';
+}
+int main()
+{
+	std::string str{ "Hello World!" };
+	printByAddress(&str);
+
+	std::string* ptr { &str };
+	printByAddress(ptr);
+	std::string* ptr{ &str };
+	return 0;
+}
+
+
+
 /*
+int main()
+{
+	int x{ 5 };
+	int* ptr{ &x };
+
+	if (ptr == nullptr) std::cout << "ptr is null\n";
+	else std::cout << "ptr is non-null\n";
+
+	int* nullPtr{};
+	std::cout << "nullPtr is: " << (nullPtr == nullptr ? "nullPtr is null" : "nullPtr is non-null");
+
+	return 0;
+}
+
+int main()
+{
+	int x{ 5 };
+	std::cout << x << '\n';
+
+	int* ptr{ &x };
+	std::cout << *ptr << '\n';
+	return 0;
+}
+
 template<typename T>
 T add(T x, T y)
 {
@@ -26,8 +68,6 @@ int main()
 
 	return 0;
 }
-*/
-
 
 template<typename T, typename U>
 auto sub(T x, U y)
@@ -42,3 +82,4 @@ int main()
 
 	return 0;
 }
+*/
