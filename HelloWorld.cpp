@@ -1,22 +1,35 @@
 #include <iostream>
-//Define an enumerated type named MonsterType 
-// to choose between the following monster races: orc, goblin, troll, ogre, and skeleton.
-//Put the MonsterType enumeration inside a namespace. 
-// Then, create a main() function and instantiate a troll. The program should compile.
-namespace Monster
-{
-	enum MonsterType
-	{
-		orc, goblin, troll, ogre, skeleton,
-	};
-}
 
+enum Color
+{
+	black, blue, pink, yellow,
+};
+
+constexpr std::string_view getColor(Color color)
+{
+	switch (color)
+	{
+		case black: return "black\n";
+		case blue: return "blue\n";
+		case pink: return "pink\n";
+		case yellow: return "yellow\n";
+		default: return "mesh mawgooooddd\n";
+	}
+}
 int main()
 {
-	std::cout << "Choose between the following monster races: orc, goblin, troll, ogre, and skeleton\n";
-	std::string input{""};
+	Color color{ pink };
+	std::cout << getColor(pink);
+
+	std::cout << "Enter a color: 0=black, 1=blue, 2=pink, 3=yellow\n";
+	int input{};
 	std::cin >> input;
-	std::cout << "You chose the monster: " + input + '\n';
-	Monster::MonsterType monster{ Monster::troll };
+	if (input < 0 || input > 3) std::cout << "Invalid number, pick from 0-3.\n";
+	else
+	{
+		Color color2{ static_cast<Color>(input) };
+		std::cout << getColor(color2);
+	
+	}
 	return 0;
 }
