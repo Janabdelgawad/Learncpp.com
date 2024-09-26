@@ -1,35 +1,48 @@
 #include <iostream>
-
-enum Color
+#include <string>
+enum class Animal
 {
-	black, blue, pink, yellow,
+	pig, chicken, goat, cat, dog, duck,
 };
 
-constexpr std::string_view getColor(Color color)
+const std::string getAnimalName(Animal animal)
 {
-	switch (color)
+	switch (animal)
 	{
-		case black: return "black\n";
-		case blue: return "blue\n";
-		case pink: return "pink\n";
-		case yellow: return "yellow\n";
-		default: return "mesh mawgooooddd\n";
+		case Animal::pig: return "pig";
+		case Animal::chicken: return "chicken";
+		case Animal::goat: return "goat";
+		case Animal::cat: return "cat";
+		case Animal::dog: return "dog";
+		case Animal::duck: return "duck";
+		default: return "Invalid Animal.";
 	}
 }
+
+void printNumberOfLegs(Animal animal)
+{
+	std::cout << "A " + getAnimalName(animal) + " has ";
+	switch (animal)
+	{
+		case Animal::chicken: 
+		case Animal::duck:
+		std::cout << 2;
+			break;
+		case Animal::pig:
+		case Animal::goat:
+		case Animal::cat:
+		case Animal::dog:
+		std::cout << 4;
+			break;
+		default:
+		std::cout << "???";
+	}
+	std::cout << " legs.\n";
+}
+
 int main()
 {
-	Color color{ pink };
-	std::cout << getColor(pink);
-
-	std::cout << "Enter a color: 0=black, 1=blue, 2=pink, 3=yellow\n";
-	int input{};
-	std::cin >> input;
-	if (input < 0 || input > 3) std::cout << "Invalid number, pick from 0-3.\n";
-	else
-	{
-		Color color2{ static_cast<Color>(input) };
-		std::cout << getColor(color2);
-	
-	}
+	printNumberOfLegs(Animal::cat);
+	printNumberOfLegs(Animal::chicken);
 	return 0;
 }
