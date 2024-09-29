@@ -1,41 +1,48 @@
 #include <iostream>
-struct Fraction
+#include <string>
+enum class Animal
 {
-	int numerator{0};
-	int denominator{1};
+	pig, chicken, goat, cat, dog, duck,
 };
-Fraction readFraction()
+
+const std::string getAnimalName(Animal animal)
 {
-	Fraction f{};
-
-	std::cout << "Enter a value for the numerator: ";
-	std::cin >> f.numerator;
-
-	std::cout << "Enter a value for the denominator: ";
-	std::cin >> f.denominator;
-	std::cout << '\n';
-
-	return f;
+	switch (animal)
+	{
+	case Animal::pig: return "pig";
+	case Animal::chicken: return "chicken";
+	case Animal::goat: return "goat";
+	case Animal::cat: return "cat";
+	case Animal::dog: return "dog";
+	case Animal::duck: return "duck";
+	default: return "Invalid Animal.";
+	}
 }
 
-constexpr Fraction multiplyFractions(const Fraction& frac1, const Fraction& frac2)
+void printNumberOfLegs(Animal animal)
 {
-	return {frac1.numerator * frac2.numerator, frac1.denominator * frac2.denominator};
-}
-
-void printFractions(const Fraction& f)
-{
-	std::cout << f.numerator << '/' << f.denominator << '\n';
+	std::cout << "A " + getAnimalName(animal) + " has ";
+	switch (animal)
+	{
+	case Animal::chicken:
+	case Animal::duck:
+		std::cout << 2;
+		break;
+	case Animal::pig:
+	case Animal::goat:
+	case Animal::cat:
+	case Animal::dog:
+		std::cout << 4;
+		break;
+	default:
+		std::cout << "???";
+	}
+	std::cout << " legs.\n";
 }
 
 int main()
 {
-	Fraction fraction1{ readFraction() };
-	Fraction fraction2{ readFraction() };
-
-	std::cout << "Your fractions multiplied together: ";
-
-	printFractions(multiplyFractions(fraction1, fraction2));
-
+	printNumberOfLegs(Animal::cat);
+	printNumberOfLegs(Animal::chicken);
 	return 0;
 }
