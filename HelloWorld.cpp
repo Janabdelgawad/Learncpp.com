@@ -1,48 +1,22 @@
 #include <iostream>
-#include <string>
-enum class Animal
+struct Revenue
 {
-	pig, chicken, goat, cat, dog, duck,
+	int ads{};
+	double clicksPercentage{}; 
+	double earnings{};
 };
 
-const std::string getAnimalName(Animal animal)
+void printRevenue(const Revenue rev)
 {
-	switch (animal)
-	{
-		case Animal::pig: return "pig";
-		case Animal::chicken: return "chicken";
-		case Animal::goat: return "goat";
-		case Animal::cat: return "cat";
-		case Animal::dog: return "dog";
-		case Animal::duck: return "duck";
-		default: return "Invalid Animal.";
-	}
-}
-
-void printNumberOfLegs(Animal animal)
-{
-	std::cout << "A " + getAnimalName(animal) + " has ";
-	switch (animal)
-	{
-		case Animal::chicken: 
-		case Animal::duck:
-		std::cout << 2;
-			break;
-		case Animal::pig:
-		case Animal::goat:
-		case Animal::cat:
-		case Animal::dog:
-		std::cout << 4;
-			break;
-		default:
-		std::cout << "???";
-	}
-	std::cout << " legs.\n";
+	std::cout << "Ads:   " << rev.ads << '\n';
+	std::cout << "Clicks percentage:  " << rev.clicksPercentage << '\n';
+	std::cout << "Earnings: " << rev.earnings << '\n';
+	double totalEarnings{rev.ads * (rev.clicksPercentage / 100) * rev.earnings };
+	std::cout << "Total earnings: " << totalEarnings << '\n';
 }
 
 int main()
 {
-	printNumberOfLegs(Animal::cat);
-	printNumberOfLegs(Animal::chicken);
+	printRevenue(Revenue{ 10, 20.3, 10000 });
 	return 0;
 }
