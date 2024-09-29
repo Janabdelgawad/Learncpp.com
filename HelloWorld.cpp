@@ -1,22 +1,41 @@
 #include <iostream>
-struct Revenue
+struct Fraction
 {
-	int ads{};
-	double clicksPercentage{}; 
-	double earnings{};
+	int numerator{0};
+	int denominator{1};
 };
-
-void printRevenue(const Revenue rev)
+Fraction readFraction()
 {
-	std::cout << "Ads:   " << rev.ads << '\n';
-	std::cout << "Clicks percentage:  " << rev.clicksPercentage << '\n';
-	std::cout << "Earnings: " << rev.earnings << '\n';
-	double totalEarnings{rev.ads * (rev.clicksPercentage / 100) * rev.earnings };
-	std::cout << "Total earnings: " << totalEarnings << '\n';
+	Fraction f{};
+
+	std::cout << "Enter a value for the numerator: ";
+	std::cin >> f.numerator;
+
+	std::cout << "Enter a value for the denominator: ";
+	std::cin >> f.denominator;
+	std::cout << '\n';
+
+	return f;
+}
+
+constexpr Fraction multiplyFractions(const Fraction& frac1, const Fraction& frac2)
+{
+	return {frac1.numerator * frac2.numerator, frac1.denominator * frac2.denominator};
+}
+
+void printFractions(const Fraction& f)
+{
+	std::cout << f.numerator << '/' << f.denominator << '\n';
 }
 
 int main()
 {
-	printRevenue(Revenue{ 10, 20.3, 10000 });
+	Fraction fraction1{ readFraction() };
+	Fraction fraction2{ readFraction() };
+
+	std::cout << "Your fractions multiplied together: ";
+
+	printFractions(multiplyFractions(fraction1, fraction2));
+
 	return 0;
 }
