@@ -1,41 +1,34 @@
 #include <iostream>
-struct Fraction
+
+template<typename T, typename U>
+	struct Pair 
+	{
+		T num1{};
+		U num2{};
+	};
+
+	struct Point
+	{
+		int num1{};
+		int num2{};
+	};
+
+template<typename T>
+void max(T num)
 {
-	int numerator{0};
-	int denominator{1};
-};
-Fraction readFraction()
-{
-	Fraction f{};
-
-	std::cout << "Enter a value for the numerator: ";
-	std::cin >> f.numerator;
-
-	std::cout << "Enter a value for the denominator: ";
-	std::cin >> f.denominator;
-	std::cout << '\n';
-
-	return f;
-}
-
-constexpr Fraction multiplyFractions(const Fraction& frac1, const Fraction& frac2)
-{
-	return {frac1.numerator * frac2.numerator, frac1.denominator * frac2.denominator};
-}
-
-void printFractions(const Fraction& f)
-{
-	std::cout << f.numerator << '/' << f.denominator << '\n';
+	std::cout << ((num.num1 < num.num2) ? num.num2 : num.num1);
 }
 
 int main()
 {
-	Fraction fraction1{ readFraction() };
-	Fraction fraction2{ readFraction() };
+	Pair<double, int> x1{ 1.3,2 };
+	max(x1);
 
-	std::cout << "Your fractions multiplied together: ";
+	std::cout << '\n';
 
-	printFractions(multiplyFractions(fraction1, fraction2));
+	Point x2{ 3,4 };
+	max(x2);
 
+	std::cout << '\n';
 	return 0;
 }
