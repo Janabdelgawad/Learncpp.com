@@ -1,41 +1,28 @@
 #include <iostream>
-struct Fraction
+template <typename T>
+struct Triad
 {
-	int numerator{0};
-	int denominator{1};
+	T first{};
+	T second{};
+	T third{};
 };
-Fraction readFraction()
+
+template <typename T>
+Triad(T, T, T) -> Triad<T>;
+
+template <typename Print>
+void print(const Triad<Print>& p)
 {
-	Fraction f{};
-
-	std::cout << "Enter a value for the numerator: ";
-	std::cin >> f.numerator;
-
-	std::cout << "Enter a value for the denominator: ";
-	std::cin >> f.denominator;
-	std::cout << '\n';
-
-	return f;
-}
-
-constexpr Fraction multiplyFractions(const Fraction& frac1, const Fraction& frac2)
-{
-	return {frac1.numerator * frac2.numerator, frac1.denominator * frac2.denominator};
-}
-
-void printFractions(const Fraction& f)
-{
-	std::cout << f.numerator << '/' << f.denominator << '\n';
+	std::cout << '[' << p.first << ", " << p.second << ", " << p.third << ']';
 }
 
 int main()
 {
-	Fraction fraction1{ readFraction() };
-	Fraction fraction2{ readFraction() };
+	Triad t1{ 1, 2, 3 }; // note: uses CTAD to deduce template arguments
+	print(t1);
 
-	std::cout << "Your fractions multiplied together: ";
-
-	printFractions(multiplyFractions(fraction1, fraction2));
+	Triad t2{ 1.2, 3.4, 5.6 }; // note: uses CTAD to deduce template arguments
+	print(t2);
 
 	return 0;
 }
