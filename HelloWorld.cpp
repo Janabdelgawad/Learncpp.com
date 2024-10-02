@@ -1,28 +1,32 @@
 #include <iostream>
-template <typename T>
-struct Triad
+struct IntPair
 {
-	T first{};
-	T second{};
-	T third{};
+	int num1{};
+	int num2{};
+	void print()
+	{
+		std::cout << "Pair(" << num1 << ", " << num2 << ")\n";
+	}
+	bool isEqual(IntPair khara)
+	{
+		return (num1 == khara.num1) && (num2 == khara.num2);
+	}
 };
 
-template <typename T>
-Triad(T, T, T) -> Triad<T>;
-
-template <typename Print>
-void print(const Triad<Print>& p)
-{
-	std::cout << '[' << p.first << ", " << p.second << ", " << p.third << ']';
-}
-
+// indicating whether one IntPair is equal to another.
 int main()
 {
-	Triad t1{ 1, 2, 3 }; // note: uses CTAD to deduce template arguments
-	print(t1);
+	IntPair p1{ 1, 2 };
+	IntPair p2{ 3, 4 };
 
-	Triad t2{ 1.2, 3.4, 5.6 }; // note: uses CTAD to deduce template arguments
-	print(t2);
+	std::cout << "p1: ";
+	p1.print();
+
+	std::cout << "p2: ";
+	p2.print();
+
+	std::cout << "p1 and p1 " << (p1.isEqual(p1) ? "are equal\n" : "are not equal\n");
+	std::cout << "p1 and p2 " << (p1.isEqual(p2) ? "are equal\n" : "are not equal\n");
 
 	return 0;
 }
