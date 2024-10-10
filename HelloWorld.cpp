@@ -1,32 +1,32 @@
 #include <iostream>
-struct IntPair
+class Ball
 {
-	int num1{};
-	int num2{};
-	void print()
-	{
-		std::cout << "Pair(" << num1 << ", " << num2 << ")\n";
-	}
-	bool isEqual(IntPair khara)
-	{
-		return (num1 == khara.num1) && (num2 == khara.num2);
-	}
+private: 
+    std::string m_color{ "black" };
+    double m_radius{ 10.0 };
+    void print() const
+    {
+        std::cout << "Ball(" << m_color << ", " << m_radius << ")\n";
+    }
+
+public:
+    Ball(double radius)
+        :Ball{ "black", radius }
+    {}
+
+    Ball(std::string_view color = "black", double radius = 10.0)
+        : m_color{ color }, m_radius{ radius }
+    {
+        print();
+    }
 };
 
-// indicating whether one IntPair is equal to another.
 int main()
 {
-	IntPair p1{ 1, 2 };
-	IntPair p2{ 3, 4 };
+    Ball def{};
+    Ball blue{ "blue" };
+    Ball twenty{ 20.0 };
+    Ball blueTwenty{ "blue", 20.0 };
 
-	std::cout << "p1: ";
-	p1.print();
-
-	std::cout << "p2: ";
-	p2.print();
-
-	std::cout << "p1 and p1 " << (p1.isEqual(p1) ? "are equal\n" : "are not equal\n");
-	std::cout << "p1 and p2 " << (p1.isEqual(p2) ? "are equal\n" : "are not equal\n");
-
-	return 0;
+    return 0;
 }
