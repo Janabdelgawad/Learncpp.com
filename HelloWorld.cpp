@@ -1,42 +1,40 @@
 #include <iostream>
-
-class Fraction
+#include <string>
+template <typename T, typename U, typename V>
+class Triad
 {
 private:
-    int m_numerator{ 0 };
-    int m_denominator{ 1 };
+	T m_first{};
+	U m_second{};
+	V m_third{};
 public:
-    explicit Fraction(int numerator = 0 , int denominator = 1)
-        : m_numerator{numerator}, m_denominator{denominator}{}
-    void getFraction() 
-    {
-        std::cout << "Enter a value for numerator: ";
-        std::cin >> m_numerator;
-        std::cout << "Enter a value for denominator: ";
-        std::cin >> m_denominator;
-        std::cout << '\n';
-    }
+	Triad(const T& first, const U& second, const V& third)
+		: m_first{ first }
+		, m_second{ second }
+		, m_third{ third } {}
 
-    Fraction multiply(const Fraction& f) const
-    {
-        return Fraction{ m_numerator * f.m_numerator, m_denominator * f.m_denominator };
-    }
+	const T& first() const { return m_first; }
+	const U& second() const { return m_second; }
+	const V& third() const { return m_third; }
 
-    void printFraction() const
-    {
-        std::cout << m_numerator << '/' << m_denominator << '\n';
-    }
+	void print() const;
 };
-
+template <typename T, typename U, typename V>
+void Triad<T, U, V>::print() const
+{
+	std::cout << "[ " << m_first << ", " << m_second << ", " << m_third << " ]";
+}
 int main()
 {
-    Fraction f1{};
-    f1.getFraction();
-    Fraction f2{};
-    f2.getFraction();
+	Triad<int, int, int> t1{ 1, 2, 3 };
+	t1.print();
+	std::cout << '\n';
+	std::cout << t1.first() << '\n';
 
-    std::cout << "Your fractions multiplied together: ";
-    f1.multiply(f2).printFraction();
+	using namespace std::literals::string_literals;
+	const Triad t2{ 1, 2.3, "Hello"s };
+	t2.print();
+	std::cout << '\n';
 
-    return 0;
+	return 0;
 }
