@@ -1,35 +1,42 @@
-#include <cmath>
 #include <iostream>
-class Point2d
+
+class Fraction
 {
 private:
-    double m_x{ 0.0 };
-    double m_y{ 0.0 };
+    int m_numerator{ 0 };
+    int m_denominator{ 1 };
 public:
-    Point2d() = default;
-    Point2d(double x, double y)
-    : m_x{x} , m_y{y}{}
-
-    void print() const
+    explicit Fraction(int numerator = 0 , int denominator = 1)
+        : m_numerator{numerator}, m_denominator{denominator}{}
+    void getFraction() 
     {
-        std::cout << "Point2d("  << m_x << ", " << m_y << ")\n";
+        std::cout << "Enter a value for numerator: ";
+        std::cin >> m_numerator;
+        std::cout << "Enter a value for denominator: ";
+        std::cin >> m_denominator;
+        std::cout << '\n';
     }
 
-    double distanceTo(Point2d& p) const
+    Fraction multiply(const Fraction& f) const
     {
-        return std::sqrt((p.m_x - m_x) * (p.m_x - m_x) + (p.m_y - m_y) * (p.m_y - m_y));
+        return Fraction{ m_numerator * f.m_numerator, m_denominator * f.m_denominator };
+    }
+
+    void printFraction() const
+    {
+        std::cout << m_numerator << '/' << m_denominator << '\n';
     }
 };
 
 int main()
 {
-    Point2d first{};
-    Point2d second{ 3.0, 4.0 };
+    Fraction f1{};
+    f1.getFraction();
+    Fraction f2{};
+    f2.getFraction();
 
-    first.print();
-    second.print();
-
-    std::cout << "Distance between two points: " << first.distanceTo(second) << '\n';
+    std::cout << "Your fractions multiplied together: ";
+    f1.multiply(f2).printFraction();
 
     return 0;
 }
