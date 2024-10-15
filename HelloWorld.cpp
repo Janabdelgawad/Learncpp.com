@@ -1,40 +1,61 @@
 #include <iostream>
-#include <string>
-template <typename T, typename U, typename V>
-class Triad
+class Vector3d;
+class Point3d
 {
 private:
-	T m_first{};
-	U m_second{};
-	V m_third{};
+	double m_x{};
+	double m_y{};
+	double m_z{};
+
 public:
-	Triad(const T& first, const U& second, const V& third)
-		: m_first{ first }
-		, m_second{ second }
-		, m_third{ third } {}
+	Point3d(double x, double y, double z)
+		: m_x{ x }, m_y{ y }, m_z{ z }
+	{ }
 
-	const T& first() const { return m_first; }
-	const U& second() const { return m_second; }
-	const V& third() const { return m_third; }
+	void print() const
+	{
+		std::cout << "Point(" << m_x << ", " << m_y << ", " << m_z << ")\n";
+	}
 
-	void print() const;
+	void moveByVector(const Vector3d& v);
 };
-template <typename T, typename U, typename V>
-void Triad<T, U, V>::print() const
+
+class Vector3d
 {
-	std::cout << "[ " << m_first << ", " << m_second << ", " << m_third << " ]";
+private:
+	double m_x{};
+	double m_y{};
+	double m_z{};
+
+public:
+	Vector3d(double x, double y, double z)
+		: m_x{ x }, m_y{ y }, m_z{ z }
+	{
+	}
+
+	void print() const
+	{
+		std::cout << "Vector(" << m_x << ", " << m_y << ", " << m_z << ")\n";
+	}
+
+	friend void Point3d::moveByVector(const Vector3d& v);
+};
+
+void Point3d::moveByVector(const Vector3d& v)
+{
+	m_x += v.m_x;
+	m_y += v.m_y;
+	m_z += v.m_z;
 }
+
 int main()
 {
-	Triad<int, int, int> t1{ 1, 2, 3 };
-	t1.print();
-	std::cout << '\n';
-	std::cout << t1.first() << '\n';
+	Point3d p{ 1.0, 2.0, 3.0 };
+	Vector3d v{ 2.0, 2.0, -3.0 };
 
-	using namespace std::literals::string_literals;
-	const Triad t2{ 1, 2.3, "Hello"s };
-	t2.print();
-	std::cout << '\n';
+	p.print();
+	p.moveByVector(v);
+	p.print();
 
 	return 0;
 }
