@@ -5,19 +5,19 @@
 class Monster
 {
 public:
-enum Type
-{
-	Dragon, Goblin, Ogre, Orc, Skeleton, Troll, Vampire, Zombie,
-	maxMonsterTypes,
-};
+	enum Type
+	{
+		Dragon, Goblin, Ogre, Orc, Skeleton, Troll, Vampire, Zombie,
+		maxMonsterTypes,
+	};
 
 private:
 	Type        m_monsterType{};
-	std::string m_monsterName{"???"};
-	std::string m_monsterRoar{"???"};
+	std::string m_monsterName{ "???" };
+	std::string m_monsterRoar{ "???" };
 	int         m_hitPoints{};
 
-public: 
+public:
 	Monster(Type monsterType, std::string_view monsterName, std::string_view monsterRoar, int hitPoints)
 		: m_monsterType{ monsterType }, m_monsterName{ monsterName }, m_monsterRoar{ monsterRoar }, m_hitPoints{ hitPoints } {}
 
@@ -40,10 +40,10 @@ public:
 	void print() const
 	{
 		std::cout << m_monsterName << " the " << getTypeString();
-		
+
 		if (m_hitPoints <= 0) std::cout << " is dead.\n";
 		else
-		std::cout << " has " << m_hitPoints << " hit points and says " << m_monsterRoar << '\n';
+			std::cout << " has " << m_hitPoints << " hit points and says " << m_monsterRoar << '\n';
 	}
 };
 
@@ -60,7 +60,7 @@ namespace MonsterGenerator
 		case 4:  return "Mort";
 		case 5:  return "Hans";
 		default: return "???";
-		}	
+		}
 	}
 	std::string_view getRoar(int n)
 	{
@@ -83,7 +83,7 @@ namespace MonsterGenerator
 			static_cast<Monster::Type>(Random::get(0,Monster::maxMonsterTypes - 1)),
 			getName(Random::get(0,5)),
 			getRoar(Random::get(0,5)),
-			Random::get(1,100)};
+			Random::get(1,100) };
 	}
 }
 int main()
