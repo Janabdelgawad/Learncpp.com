@@ -15,6 +15,5 @@ int main()
 	assert(std::size(Animals::legs) == Animals::maxAnimals);
 
 	std::cout << " An elephant has " << Animals::legs[Animals::elephant] << " legs.\n";
-	std::cout << "khara";
 	return 0;
 }
