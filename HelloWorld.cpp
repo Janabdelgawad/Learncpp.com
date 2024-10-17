@@ -1,31 +1,45 @@
+/*
+Numbers divisible by only 3 should print “fizz”.
+Numbers divisible by only 5 should print “buzz”.
+Numbers divisible by only 7 should print “pop”.
+Numbers divisible by only 11 should print “bang”.
+Numbers divisible by only 13 should print “jazz”.
+Numbers divisible by only 17 should print “pow”.
+Numbers divisible by only 19 should print “boom”.
+Numbers divisible by more than one of the above should print each of the words associated with its divisors.
+Numbers not divisible by any of the above should just print the number.
+*/
 #include <iostream>
 #include <vector>
+#include <cassert>
 
-template <typename T>
-T findMax(const std::vector<T>& arr)
+void fizzBuzz(int count)
 {
-    std::size_t length{ arr.size() };
+	static const std::vector divisors{ 3, 5, 7, 9, 11, 13, 17, 19 };
+	static const std::vector<std::string_view> words{ "fizz", "buzz", "pop", "bang", "jazz", "pow", "boom" };
 
-    if (length == 0) return T{};
+	assert(std::size(divisors) == std::size(words) && "fizzbuzz: array sizes don't match");
 
-    T max{ arr[0]};
-    for (std::size_t index{ 1 }; index < length; ++index)
-        if (arr[index] > max) max = arr[index];
+	for (int i{ 1 }; i <= count; ++i)
+	{
+		bool printed{ false };
 
-    return max;
+		for (std::size_t j{ 0 }; j < divisors.size(); ++j)
+		{
+			if (i % divisors[j])
+			{
+				std::cout << words[j];
+				printed = true;
+			}
+		}
+		if (!printed) std::cout << i;
 
+		std::cout << '\n';
+	}
 }
-
 int main()
 {
-    std::vector data1{ 84, 92, 76, 81, 56 };
-    std::cout << findMax(data1) << '\n';
 
-    std::vector data2{ -13.0, -26.7, -105.5, -14.8 };
-    std::cout << findMax(data2) << '\n';
-
-    std::vector<int> data3{ };
-    std::cout << findMax(data3) << '\n';
-
-    return 0;
+	fizzBuzz(150);
+	return 0;
 }
