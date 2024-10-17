@@ -1,19 +1,52 @@
-#include <vector>
 #include <iostream>
+#include <vector>
+#include <limits>
+ int getValidNumber()
+ {
+     int num{};
+     do
+     {
+         std::cout << "Enter a number between 1 and 9: ";
+         std::cin >> num;
+
+         if (!std::cin)
+             std::cin.clear();
+
+         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+     } while (num < 1 || num > 9);
+
+     return num;
+ }
+
+ template <typename T>
+ void printArray(const std::vector<T>& arr)
+ {
+     for (std::size_t index{ 0 }; index < arr.size(); ++index)
+         std::cout << arr[index] << ' ';
+     if (arr.size() > 0) std::cout << '\n';
+ }
+
+template <typename T>
+int valueChecker(T value, const std::vector<T>& arr)
+{
+    std::size_t length{ arr.size() };
+    for (std::size_t index{ 0 }; index < length; ++index)
+    {
+        if (value == arr[index]) return index;
+        
+    }
+    return -1;
+}
+
 int main()
 {
-	//Q1
-	std::vector<int> v1{1, 4, 9, 16, 25};
-	//Q2 difference between v{2} and v(2), first element's value intialized with 2 and a vector with 2 elements zero initialized
-	//Q3
-	std::vector<double> v2(365);
+    std::vector arr{ 4, 6, 7, 3, 8, 2, 1, 9 };
+    int num{ getValidNumber()};
+    printArray(arr);
+    int index{ valueChecker(num, arr) };
+    if(index == -1) std::cout << "The number " << num << " was not found \n";
+    else     std::cout << "The number " << num << " has index " << index << '\n';
 
-	//Q4
-	std::cout << "Enter 3 integers: ";
-	std::vector<int> input(3);
-	std::cin >> input[0] >> input[1] >> input[2];
-
-	std::cout << "The sum is: " << input[0] + input[1] + input[2] << '\n';
-	std::cout << "The product is: " << input[0] * input[1] * input[2] << '\n';
-	return 0;
+    return 0;
 }
