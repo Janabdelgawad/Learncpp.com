@@ -1,52 +1,43 @@
+// h/t to reader Waldo for suggesting this quiz
+#include <cassert>
 #include <iostream>
+#include <string_view>
 #include <vector>
-#include <limits>
- int getValidNumber()
- {
-     int num{};
-     do
-     {
-         std::cout << "Enter a number between 1 and 9: ";
-         std::cin >> num;
 
-         if (!std::cin)
-             std::cin.clear();
-
-         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-     } while (num < 1 || num > 9);
-
-     return num;
- }
-
- template <typename T>
- void printArray(const std::vector<T>& arr)
- {
-     for (std::size_t index{ 0 }; index < arr.size(); ++index)
-         std::cout << arr[index] << ' ';
-     if (arr.size() > 0) std::cout << '\n';
- }
-
-template <typename T>
-int valueChecker(T value, const std::vector<T>& arr)
+void fizzbuzz(int count)
 {
-    std::size_t length{ arr.size() };
-    for (std::size_t index{ 0 }; index < length; ++index)
-    {
-        if (value == arr[index]) return index;
-        
-    }
-    return -1;
+	// We'll make these static so we only have to do initialization once
+	static const std::vector divisors                { 3, 5, 7, 11, 13, 17, 19 };
+	static const std::vector<std::string_view> words { "fizz", "buzz", "pop", "bang", "jazz", "pow", "boom" };
+
+	assert(std::size(divisors) == std::size(words) && "fizzbuzz: array sizes don't match");
+
+	// Loop through each number between 1 and count (inclusive)
+	for (int i{ 1 }; i <= count; ++i)
+	{
+		bool printed{ false };
+
+		// Check the current number against each possible divisor
+		for (std::size_t j{ 0 }; j < divisors.size(); ++j)
+		{
+			if (i % divisors[j] == 0)
+			{
+				std::cout << words[j];
+				printed = true;
+			}
+		}
+
+		// If there were no divisors
+		if (!printed)
+			std::cout << i;
+
+		std::cout << '\n';
+	}
 }
 
 int main()
 {
-    std::vector arr{ 4, 6, 7, 3, 8, 2, 1, 9 };
-    int num{ getValidNumber()};
-    printArray(arr);
-    int index{ valueChecker(num, arr) };
-    if(index == -1) std::cout << "The number " << num << " was not found \n";
-    else     std::cout << "The number " << num << " has index " << index << '\n';
+	fizzbuzz(150);
 
-    return 0;
+	return 0;
 }
