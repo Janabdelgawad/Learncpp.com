@@ -1,51 +1,26 @@
 #include <iostream>
 #include <vector>
-
-void printStack(const std::vector<int>& stack)
+#include <cassert>
+namespace Item
 {
-	std::cout << "\t(Stack:";
+	enum ItemTypes
+	{
+		healthPotions, torches, arrows, maxCount
 
-	for (auto element : stack) std::cout << ' ' << element;
-
-	if (stack.empty()) std::cout << " empty";
-	
-	std::cout << ")\n";
-
+	};
 }
-
-void pushAndprint(std::vector<int>& stack, int value)
+int totalCount(const std::vector<int>& inventory)
 {
-	stack.push_back(value);
-	std::cout << "Push " << value;
-	printStack(stack);
+	int sum{ 0 };
+	for (auto item : inventory)
+		sum += item;
+	return sum;
 }
-
-void popAndPrint(std::vector<int>& stack)
-{
-	stack.pop_back();
-	std::cout << "Pop ";
-	printStack(stack);
-}
-
 int main()
 {
-	std::vector<int> stack{};
-	printStack(stack);
+	std::vector inventory{ 1, 5, 10 };
+	assert(std::size(inventory) == Item::maxCount);
 
-	pushAndprint(stack, 1);
-
-	pushAndprint(stack, 2);
-
-	pushAndprint(stack, 3);
-
-	popAndPrint(stack);
-
-	pushAndprint(stack, 4);
-
-	popAndPrint(stack);
-
-	popAndPrint(stack);
-
-	popAndPrint(stack);
+	std::cout << "You have " << totalCount(inventory) << " total items.\n";
 	return 0;
 }
