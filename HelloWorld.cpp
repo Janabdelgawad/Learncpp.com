@@ -32,7 +32,6 @@ std::string_view getItemNameSingular(Item::ItemTypes type)
 	default: return "???";
 	}
 }
-
 template <typename T>
 constexpr std::size_t toUZ(T value)
 {
