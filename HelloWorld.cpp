@@ -1,19 +1,51 @@
 #include <iostream>
 #include <vector>
-#include <cassert>
-namespace Animals
+
+void printStack(const std::vector<int>& stack)
 {
-	enum Animals
-	{
-		chicken, dog, cat, elephant, duck, snake, maxAnimals,
-	};
-	const std::vector legs{ 2, 4, 4, 4, 2, 0 };
+	std::cout << "\t(Stack:";
+
+	for (auto element : stack) std::cout << ' ' << element;
+
+	if (stack.empty()) std::cout << " empty";
+	
+	std::cout << ")\n";
+
+}
+
+void pushAndprint(std::vector<int>& stack, int value)
+{
+	stack.push_back(value);
+	std::cout << "Push " << value;
+	printStack(stack);
+}
+
+void popAndPrint(std::vector<int>& stack)
+{
+	stack.pop_back();
+	std::cout << "Pop ";
+	printStack(stack);
 }
 
 int main()
 {
-	assert(std::size(Animals::legs) == Animals::maxAnimals);
+	std::vector<int> stack{};
+	printStack(stack);
 
-	std::cout << " An elephant has " << Animals::legs[Animals::elephant] << " legs.\n";
+	pushAndprint(stack, 1);
+
+	pushAndprint(stack, 2);
+
+	pushAndprint(stack, 3);
+
+	popAndPrint(stack);
+
+	pushAndprint(stack, 4);
+
+	popAndPrint(stack);
+
+	popAndPrint(stack);
+
+	popAndPrint(stack);
 	return 0;
 }
