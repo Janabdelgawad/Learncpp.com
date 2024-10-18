@@ -1,51 +1,15 @@
 #include <iostream>
 #include <vector>
-
-void printStack(const std::vector<int>& stack)
-{
-	std::cout << "\t(Stack:";
-
-	for (auto element : stack) std::cout << ' ' << element;
-
-	if (stack.empty()) std::cout << " empty";
-	
-	std::cout << ")\n";
-
-}
-
-void pushAndprint(std::vector<int>& stack, int value)
-{
-	stack.push_back(value);
-	std::cout << "Push " << value;
-	printStack(stack);
-}
-
-void popAndPrint(std::vector<int>& stack)
-{
-	stack.pop_back();
-	std::cout << "Pop ";
-	printStack(stack);
-}
-
+#include <string_view>
+//Write definitions for the following. Use CTAD where possible
+//
 int main()
 {
-	std::vector<int> stack{};
-	printStack(stack);
-
-	pushAndprint(stack, 1);
-
-	pushAndprint(stack, 2);
-
-	pushAndprint(stack, 3);
-
-	popAndPrint(stack);
-
-	pushAndprint(stack, 4);
-
-	popAndPrint(stack);
-
-	popAndPrint(stack);
-
-	popAndPrint(stack);
+	std::vector<int> even6{ 2, 4, 6, 8, 10, 12 };
+	const std::vector<double> doubles{ 1.2, 3.4, 5.6, 7.8 };
+	using namespace std::literals::string_view_literals;
+	const std::vector names{"Alex"sv, "Brad"sv, "Charles"sv, "Dave"sv};
+	std::vector value{ 12 };
+	std::vector<int> values(12);
 	return 0;
 }
