@@ -14,15 +14,16 @@ void printStore(const std::array<Item, N>& arr)
 		std::cout << "A " << i.name << " costs " << i.gold << " gold.\n";
 	}
 }
+//not explicitly specify the element type for each initializer.
 int main()
 {
-	constexpr std::array arr 
-	{
-		Item {"sword", 5},
-		Item {"dagger", 3},
-		Item {"club", 2},
-		Item {"spear", 7}
-	};
+	constexpr std::array<Item, 4> arr 
+	{ {
+		{"sword", 5},
+		{"dagger", 3},
+		{"club", 2},
+		{"spear", 7}
+	} };
 	printStore(arr);
 	return 0;
 }
