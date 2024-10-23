@@ -1,18 +1,16 @@
-/*
-Use a pointer and pointer arithmetic
-to step through each character of the string
-and print that character.
-*/
 #include <iostream>
-void print(const char* words)
+//pointer to first char of string words
+void print(const char words[])
 {
-	const char* begin{ words };
-	const char* end{words + std::strlen(words) };
-
-	for (;begin != end;++begin)
+	//as long as pointer doesnt point to a null terminator
+	while (*words != '\0')
 	{
-		std::cout << *begin << ' ';
+		//dereference and print the value
+		std::cout << *words << ' ';
+		//increment the pointer to point to the next char in line
+		++words;
 	}
+
 }
 
 int main()
