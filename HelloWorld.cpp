@@ -59,13 +59,90 @@ public:
     }
 };
 
-int main()
+struct Player
+{
+    int score{};
+};
+
+namespace Settings
+{
+    constexpr int bust { 21 };
+    constexpr int dealerStopsAt { 17 };
+}
+
+bool playerWantsHit()
+{
+    while (true)
+    {
+        std::cout << "(h) to hit, or (s) to stand: ";
+        char ch{};
+        std::cin >> ch;
+        switch (ch)
+        {
+            case 'h': return true;
+            case 's': return false;
+        }
+    }
+}
+
+bool playerTurn(Deck& deck, Player& player)
+{
+    while (player.score < Settings::bust && playerWantsHit())
+    {
+        Card card{ deck.dealCard() };
+        player.score += card.value();
+        std::cout << "The dealer flips a " << card << ".  They now have: " << player.score << '\n';
+    }
+    if (player.score > Settings::bust)
+    {
+        std::cout << "The dealer went bust!\n";
+        return true;
+    }
+    return false;
+
+}
+
+bool dealerTurn(Deck& deck, Player& dealer)
+{
+    while (dealer.score < Settings::dealerStopsAt)
+    {
+        Card card{ deck.dealCard() };
+        dealer.score += card.value();
+        std::cout << "The dealer flips a " << card << ".  They now have: " << dealer.score << '\n';
+    }
+    if (dealer.score > Settings::bust)
+    {
+        std::cout << "The dealer went bust!\n";
+        return true;
+    }
+    return false;
+
+}
+
+bool playBlackJack()
 {
     Deck deck{};
-    std::cout << deck.dealCard() << ' ' << deck.dealCard() << ' ' << deck.dealCard() << '\n';
-
     deck.shuffle();
-    std::cout << deck.dealCard() << ' ' << deck.dealCard() << ' ' << deck.dealCard() << '\n';
+
+    Player dealer{ deck.dealCard().value() };
+    std::cout << "The dealer is showing: " << dealer.score << '\n';
+
+    Player player{ deck.dealCard().value() + deck.dealCard().value() };
+    std::cout << "You have score: " << player.score << '\n';
+
+    if (playerTurn(deck, player))
+        return false;
+
+    if (dealerTurn(deck, dealer))
+        return true;
+
+    return (player.score > dealer.score);
+}
+
+int main()
+{
+    if(playBlackJack()) std::cout << "You win!\n";
+    else std::cout << "You lose!\n";
 
     return 0;
 }
