@@ -4,32 +4,18 @@
 
 int main()
 {
-	int array[]{ 30, 50, 20, 10, 40 };
+	int array[]{ 6, 3, 2, 9, 7, 1, 5, 4, 8 };
 	constexpr int length{ static_cast<int>(std::size(array)) };
 
-	// Step through each element of the array
-	// (except the last one, which will already be sorted by the time we get there)
-	for (int startIndex{ 0 }; startIndex < length - 1; ++startIndex)
+	for (int iteration{ 0 }; iteration < length-1; ++iteration)
 	{
-		// smallestIndex is the index of the smallest element we’ve encountered this iteration
-		// Start by assuming the smallest element is the first element of this iteration
-		int largestIndex{ startIndex };
-
-		// Then look for a smaller element in the rest of the array
-		for (int currentIndex{ startIndex + 1 }; currentIndex < length; ++currentIndex)
+		for (int currentIndex{ 0 }; currentIndex < length -1; ++currentIndex)
 		{
-			// If we've found an element that is smaller than our previously found smallest
-			if (array[currentIndex] > array[largestIndex])
-				// then keep track of it
-				largestIndex = currentIndex;
+			if (array[currentIndex] > array[currentIndex+1])
+				std::swap(array[currentIndex], array[currentIndex+1]);
 		}
-
-		// smallestIndex is now the index of the smallest element in the remaining array
-				// swap our start element with our smallest element (this sorts it into the correct place)
-		std::swap(array[startIndex], array[largestIndex]);
 	}
 
-	// Now that the whole array is sorted, print our sorted array as proof it works
 	for (int index{ 0 }; index < length; ++index)
 		std::cout << array[index] << ' ';
 
