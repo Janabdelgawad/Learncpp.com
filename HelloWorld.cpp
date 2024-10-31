@@ -1,36 +1,27 @@
 #include <iostream>
-#include <iterator>
-#include <utility>
-
+#include <string>
+#include <algorithm>
 int main()
 {
-	int array[]{ 6, 3, 2, 9, 7, 1, 5, 4, 8 };
-	constexpr int length{ static_cast<int>(std::size(array)) };
+	std::cout << "How many names would you like to enter: ";
+	std::size_t num{};
+	std::cin >> num;
 
-	
-	for (int iteration{ 0 }; iteration < length-1; ++iteration)
+	auto* names{ new std::string[num]{} };
+
+	for (std::size_t i{0}; i < num; ++i)
 	{
-		int endOfArrayIndex{ length - iteration };
-		bool swapped = false;
-
-		for (int currentIndex{ 0 }; currentIndex < endOfArrayIndex -1; ++currentIndex)
-		{
-			if (array[currentIndex] > array[currentIndex+1])
-				std::swap(array[currentIndex], array[currentIndex+1]);
-				swapped = true;
-		}
-
-		if (!swapped)
-		{
-			std::cout << "Early termination on iteration: " << iteration + 1 << '\n';
-			break;
-		}
+		std::cout << "Enter name #" << i + 1 << ": ";
+		std::getline(std::cin >> std::ws, names[i]);
 	}
 
-	for (int index{ 0 }; index < length; ++index)
-		std::cout << array[index] << ' ';
+	std::sort(names, names + num);
 
-	std::cout << '\n';
+	std::cout << "\nHere is your sorted list: \n";
 
+	for (std::size_t i{ 0 }; i < num; ++i)
+		std::cout << "Name #" << i + 1 << ": " << names[i] << '\n';
+
+	delete[] names;
 	return 0;
 }
