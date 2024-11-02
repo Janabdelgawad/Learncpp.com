@@ -1,13 +1,15 @@
 #include <iostream>
-int factorial(int N)
+/* 
+(e.g. 357 = 3 + 5 + 7 = 15).
+*/
+int Sum(int input)
 {
-	if (N <= 0) return 1;
-
-	return factorial(N - 1) * N;
+	if (input < 10)
+		return input;
+	return Sum(input/10) + input%10;
 }
 int main()
 {
-	for (int i{ 0 }; i < 7; ++i)
-		std::cout << factorial(i) << '\n';
+	std::cout << Sum(93427) << '\n';
 	return 0;
 }
