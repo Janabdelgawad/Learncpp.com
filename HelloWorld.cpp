@@ -1,19 +1,31 @@
 #include <iostream>
-void binaryRepresentation(int i)
+#include <array>
+struct Student
 {
-	if (i == 0) return;
-	//recurse to next bit
-	binaryRepresentation(i / 2);
-	//print in reverse
-	std::cout << i % 2;
-}
-
+    std::string_view name{};
+    int points{};
+    
+};
 int main()
 {
-	std::cout << "Enter a positive integer: ";
-	int input{};
-	std::cin >> input;
+    std::array<Student, 8> arr{
+      { { "Albert", 3 },
+        { "Ben", 5 },
+        { "Christine", 2 },
+        { "Dan", 8 }, // Dan has the most points (8).
+        { "Enchilada", 4 },
+        { "Francis", 1 },
+        { "Greg", 3 },
+        { "Hagrid", 5 } }
+    };
 
-	binaryRepresentation(input);
-	return 0;
+    const auto best
+    {
+    std::max_element(arr.begin(), arr.end(), [](const auto& a, const auto& b){
+        return a.points < b.points;
+        })
+    };
+
+    std::cout << best->name << " is the best student\n";
+    return 0;
 }
