@@ -1,15 +1,19 @@
 #include <iostream>
-/* 
-(e.g. 357 = 3 + 5 + 7 = 15).
-*/
-int Sum(int input)
+void binaryRepresentation(int i)
 {
-	if (input < 10)
-		return input;
-	return Sum(input/10) + input%10;
+	if (i == 0) return;
+	//recurse to next bit
+	binaryRepresentation(i / 2);
+	//print in reverse
+	std::cout << i % 2;
 }
+
 int main()
 {
-	std::cout << Sum(93427) << '\n';
+	std::cout << "Enter a positive integer: ";
+	int input{};
+	std::cin >> input;
+
+	binaryRepresentation(input);
 	return 0;
 }
