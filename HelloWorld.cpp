@@ -1,31 +1,31 @@
-#include <iostream>
+#include <algorithm>
 #include <array>
-struct Student
+#include <iostream>
+#include <string_view>
+//Use std::sort and a lambda in the following code to sort the seasons by ascending average temperature.
+struct Season
 {
     std::string_view name{};
-    int points{};
-    
+    double averageTemperature{};
 };
+
 int main()
 {
-    std::array<Student, 8> arr{
-      { { "Albert", 3 },
-        { "Ben", 5 },
-        { "Christine", 2 },
-        { "Dan", 8 }, // Dan has the most points (8).
-        { "Enchilada", 4 },
-        { "Francis", 1 },
-        { "Greg", 3 },
-        { "Hagrid", 5 } }
+    std::array<Season, 4> seasons{
+      { { "Spring", 285.0 },
+        { "Summer", 296.0 },
+        { "Fall", 288.0 },
+        { "Winter", 263.0 } }
     };
 
-    const auto best
+    std::sort(seasons.begin(), seasons.end(), [](const auto& a, const auto& b) {
+        return a.averageTemperature < b.averageTemperature;
+        });
+
+    for (const auto& season : seasons)
     {
-    std::max_element(arr.begin(), arr.end(), [](const auto& a, const auto& b){
-        return a.points < b.points;
-        })
-    };
+        std::cout << season.name << '\n';
+    }
 
-    std::cout << best->name << " is the best student\n";
     return 0;
 }
