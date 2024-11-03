@@ -1,19 +1,31 @@
+#include <algorithm>
+#include <array>
 #include <iostream>
-void binaryRepresentation(int i)
+#include <string_view>
+//Use std::sort and a lambda in the following code to sort the seasons by ascending average temperature.
+struct Season
 {
-	if (i == 0) return;
-	//recurse to next bit
-	binaryRepresentation(i / 2);
-	//print in reverse
-	std::cout << i % 2;
-}
+    std::string_view name{};
+    double averageTemperature{};
+};
 
 int main()
 {
-	std::cout << "Enter a positive integer: ";
-	int input{};
-	std::cin >> input;
+    std::array<Season, 4> seasons{
+      { { "Spring", 285.0 },
+        { "Summer", 296.0 },
+        { "Fall", 288.0 },
+        { "Winter", 263.0 } }
+    };
 
-	binaryRepresentation(input);
-	return 0;
+    std::sort(seasons.begin(), seasons.end(), [](const auto& a, const auto& b) {
+        return a.averageTemperature < b.averageTemperature;
+        });
+
+    for (const auto& season : seasons)
+    {
+        std::cout << season.name << '\n';
+    }
+
+    return 0;
 }
