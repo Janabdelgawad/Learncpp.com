@@ -1,15 +1,26 @@
-//Write function prototypes for the following cases.Use const if / when necessary.
+#include <iostream> 
+class Fraction
+{
+private:
+    int m_numerator{ 0 };
+    int m_denominator{ 1 };
+public:
+    explicit Fraction(int numerator, int denominator =1) :  m_numerator{numerator}, m_denominator{denominator}{}
+    
+    void print() const
+    {
+        std::cout << m_numerator << '/' << m_denominator << '\n';
+    }
+};
 
-//Q1:A function named max() that takes two doubles and returns the larger of the two.
-double max(double x, double y);
 
-//Q2:A function named swap() that swaps two integers.
-void swap(int& x, int& y);
+int main()
+{
+    Fraction f1{ 1, 4 };
+    f1.print();
 
-//Q3:A function named getLargestElement() 
-// that takes a dynamically allocated array of integers 
-// and returns the largest number 
-// in such a way that the caller can change the value of the element returned
-// (don’t forget the length parameter).
-int* getLargestElement(int* array, int length);
+    Fraction f2{ 1, 2 };
+    f2.print();
 
+    return 0;
+}
