@@ -1,89 +1,63 @@
+#include <algorithm>
 #include <iostream>
-#include <numeric> // for std::gcd
+#include <string>
+#include <vector>
 
-class Fraction
+class Car
 {
 private:
-	int m_numerator{};
-	int m_denominator{};
+    std::string m_make;
+    std::string m_model;
 
 public:
-	Fraction(int numerator = 0, int denominator = 1) :
-		m_numerator{ numerator }, m_denominator{ denominator }
-	{
-		// We put reduce() in the constructor to ensure any new fractions we make get reduced!
-		// Any fractions that are overwritten will need to be re-reduced
-		reduce();
-	}
+    Car(std::string_view make, std::string_view model)
+        : m_make{ make }, m_model{ model }
+    {
+    }
 
-	void reduce()
-	{
-		int gcd{ std::gcd(m_numerator, m_denominator) };
-		if (gcd)
-		{
-			m_numerator /= gcd;
-			m_denominator /= gcd;
-		}
-	}
+    friend bool operator== (const Car& c1, const Car& c2);
+    friend bool operator!= (const Car& c1, const Car& c2);
 
-	friend Fraction operator*(const Fraction& f1, const Fraction& f2);
-	friend Fraction operator*(const Fraction& f1, int value);
-	friend Fraction operator*(int value, const Fraction& f1);
+    friend std::ostream& operator<< (std::ostream& out, const Car& c)
+    {
+        out << '(' << c.m_make << ", " << c.m_model << ")";
+        return out;
+    }
 
-	void print() const
-	{
-		std::cout << m_numerator << '/' << m_denominator << '\n';
-	}
-
-	friend std::ostream& operator<< (std::ostream& out, const Fraction& f);
+    friend bool operator<(const Car& c1, const Car& c2)
+    {
+        //if the car isn't the same
+        if (c1.m_make != c2.m_make)
+            return c1.m_make < c2.m_make; //compare the MAKE normally
+        return c1.m_model < c2.m_model; // else if they are the same, compare the MODEL
+    }
 };
 
-Fraction operator*(const Fraction& f1, const Fraction& f2)
+bool operator== (const Car& c1, const Car& c2)
 {
-	return Fraction{ f1.m_numerator * f2.m_numerator, f1.m_denominator * f2.m_denominator };
+    return (c1.m_make == c2.m_make &&
+        c1.m_model == c2.m_model);
 }
 
-Fraction operator*(const Fraction& f1, int value)
+bool operator!= (const Car& c1, const Car& c2)
 {
-	return Fraction{ f1.m_numerator * value, f1.m_denominator };
-}
-
-Fraction operator*(int value, const Fraction& f1)
-{
-	return Fraction{ f1.m_numerator * value, f1.m_denominator };
-}
-
-std::ostream& operator<< (std::ostream& out, const Fraction& f)
-{
-    out << f.m_numerator << '/' << f.m_denominator;
-    return out;
-}
-
-std::istream& operator>> (std::istream& in, Fraction& f)
-{
-    int numerator{ 0 };
-	char ignore{};
-    int denominator{ 1 };
-
-    in >> numerator >> ignore >> denominator;
-
-    if (in)
-        f = Fraction{ numerator, denominator };
-
-    return in;
+    return (c1.m_make != c2.m_make ||
+        c1.m_model != c2.m_model);
 }
 
 int main()
 {
-	Fraction f1{};
-	std::cout << "Enter fraction 1: ";
-	std::cin >> f1;
+    std::vector<Car> cars{
+      { "Toyota", "Corolla" },
+      { "Honda", "Accord" },
+      { "Toyota", "Camry" },
+      { "Honda", "Civic" }
+    };
 
-	Fraction f2{};
-	std::cout << "Enter fraction 2: ";
-	std::cin >> f2;
+    std::sort(cars.begin(), cars.end()); // requires an overloaded operator<
 
-	std::cout << f1 << " * " << f2 << " is " << f1 * f2 << '\n'; // note: The result of f1 * f2 is an r-value
+    for (const auto& car : cars)
+        std::cout << car << '\n'; // requires an overloaded operator<<
 
-	return 0;
+    return 0;
 }
