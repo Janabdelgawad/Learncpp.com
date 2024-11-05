@@ -1,56 +1,89 @@
-#include <iostream> 
+#include <iostream>
+#include <numeric> // for std::gcd
+
 class Fraction
 {
 private:
-    int m_numerator{ 0 };
-    int m_denominator{ 1 };
-public:
-    explicit Fraction(int numerator, int denominator =1) :  m_numerator{numerator}, m_denominator{denominator}{}
+	int m_numerator{};
+	int m_denominator{};
 
-    friend Fraction operator*(const Fraction& f1, const Fraction& f2);
-    friend Fraction operator*(const Fraction& f1, int value);
-    friend Fraction operator*(int value, const Fraction& f1);
- 
-    void print() const
-    {
-        std::cout << m_numerator << '/' << m_denominator << '\n';
-    }
+public:
+	Fraction(int numerator = 0, int denominator = 1) :
+		m_numerator{ numerator }, m_denominator{ denominator }
+	{
+		// We put reduce() in the constructor to ensure any new fractions we make get reduced!
+		// Any fractions that are overwritten will need to be re-reduced
+		reduce();
+	}
+
+	void reduce()
+	{
+		int gcd{ std::gcd(m_numerator, m_denominator) };
+		if (gcd)
+		{
+			m_numerator /= gcd;
+			m_denominator /= gcd;
+		}
+	}
+
+	friend Fraction operator*(const Fraction& f1, const Fraction& f2);
+	friend Fraction operator*(const Fraction& f1, int value);
+	friend Fraction operator*(int value, const Fraction& f1);
+
+	void print() const
+	{
+		std::cout << m_numerator << '/' << m_denominator << '\n';
+	}
+
+	friend std::ostream& operator<< (std::ostream& out, const Fraction& f);
 };
 
 Fraction operator*(const Fraction& f1, const Fraction& f2)
 {
-    return Fraction{ f1.m_numerator * f2.m_numerator, f1.m_denominator * f2.m_denominator };
+	return Fraction{ f1.m_numerator * f2.m_numerator, f1.m_denominator * f2.m_denominator };
 }
 
 Fraction operator*(const Fraction& f1, int value)
 {
-    return Fraction{ f1.m_numerator * value, f1.m_denominator };
+	return Fraction{ f1.m_numerator * value, f1.m_denominator };
 }
 
 Fraction operator*(int value, const Fraction& f1)
 {
-    return Fraction{f1 * value};
+	return Fraction{ f1.m_numerator * value, f1.m_denominator };
+}
+
+std::ostream& operator<< (std::ostream& out, const Fraction& f)
+{
+    out << f.m_numerator << '/' << f.m_denominator;
+    return out;
+}
+
+std::istream& operator>> (std::istream& in, Fraction& f)
+{
+    int numerator{ 0 };
+	char ignore{};
+    int denominator{ 1 };
+
+    in >> numerator >> ignore >> denominator;
+
+    if (in)
+        f = Fraction{ numerator, denominator };
+
+    return in;
 }
 
 int main()
 {
-    Fraction f1{ 2, 5 };
-    f1.print();
+	Fraction f1{};
+	std::cout << "Enter fraction 1: ";
+	std::cin >> f1;
 
-    Fraction f2{ 3, 8 };
-    f2.print();
+	Fraction f2{};
+	std::cout << "Enter fraction 2: ";
+	std::cin >> f2;
 
-    Fraction f3{ f1 * f2 };
-    f3.print();
+	std::cout << f1 << " * " << f2 << " is " << f1 * f2 << '\n'; // note: The result of f1 * f2 is an r-value
 
-    Fraction f4{ f1 * 2 };
-    f4.print();
-
-    Fraction f5{ 2 * f2 };
-    f5.print();
-
-    Fraction f6{ Fraction{1, 2} *Fraction{2, 3} *Fraction{3, 4} };
-    f6.print();
-
-    return 0;
+	return 0;
 }
