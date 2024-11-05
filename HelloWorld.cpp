@@ -1,51 +1,41 @@
 #include <string>
-#include <vector>
+#include <cassert>
 #include <iostream>
-
-struct StudentGrade
-{
-	std::string name{};
-	char        grade{};
-};
-
-class GradeMap
+class MyString
 {
 private:
-	std::vector<StudentGrade> m_map{};
-
+	std::string m_word{};
 public:
-	char& operator[](std::string_view name);
-};
+	MyString(std::string_view string = {})
+		:m_word{ string }{}
 
-char& GradeMap::operator[](std::string_view name)
-{
-	auto found
-	{ std::find_if
-		(m_map.begin(), m_map.end(),
-		[name](const auto& student)
-		{return (student.name == name); }
-		)
-	};
-
-	if (found != m_map.end())
+	std::string_view operator()(int start, int length)
 	{
-		return found->grade;
+		assert(start >= 0);
+		assert(start + length <= static_cast<int>(m_word.length()) &&
+		"MyString::operator(int, int): Substring is out of range");
+
+		return
+		{
+			std::string_view{ m_word }.substr(
+			static_cast<std::string::size_type>(start),
+			static_cast<std::string::size_type>(length)
+		) };
+
 	}
 
-	m_map.push_back(StudentGrade{ std::string{name} });
-	
-	return m_map.back().grade;
-}
+	friend std::ostream& operator<<(std::ostream& out, const MyString& s)
+	{
+		out << s.m_word;
+		return out;
+	}
+};
 
 int main()
 {
-	GradeMap grades{};
-
-	grades["Joe"] = 'A';
-	grades["Frank"] = 'B';
-
-	std::cout << "Joe has a grade of " << grades["Joe"] << '\n';
-	std::cout << "Frank has a grade of " << grades["Frank"] << '\n';
+	MyString s{ "Hello, world!" };
+	std::cout << s(7, 5) << '\n'; // start at index 7 and return 5 characters
 
 	return 0;
 }
+
