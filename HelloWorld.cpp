@@ -1,58 +1,62 @@
 #include <iostream>
+#include <numeric> // for std::gcd
 
-class Point
+class Fraction
 {
 private:
-    double m_x{};
-    double m_y{};
-    double m_z{};
+	int m_numerator{};
+	int m_denominator{};
 
 public:
-    Point(double x = 0.0, double y = 0.0, double z = 0.0) :
-        m_x{ x }, m_y{ y }, m_z{ z }
-    {
-    }
+	Fraction(int numerator = 0, int denominator = 1) :
+		m_numerator{ numerator }, m_denominator{ denominator }
+	{
+		// We put reduce() in the constructor to ensure any new fractions we make get reduced!
+		// Any fractions that are overwritten will need to be re-reduced
+		reduce();
+	}
 
-    // Convert a Point into its negative equivalent
-    Point operator- () const;
+	void reduce()
+	{
+		int gcd{ std::gcd(m_numerator, m_denominator) };
+		if (gcd)
+		{
+			m_numerator /= gcd;
+			m_denominator /= gcd;
+		}
+	}
 
-    // Return true if the point is set at the origin
-    bool operator! () const;
+	friend std::ostream& operator<<(std::ostream& out, const Fraction& f1);
 
-    //returns the Point as it is
-    Point operator+ () const;
+	friend bool operator== (const Fraction& f1, const Fraction& f2) { return (f1.m_numerator == f2.m_numerator) && (f1.m_denominator == f2.m_denominator); }
+	//convert sign, not order of parameters
+	friend bool operator!= (const Fraction& f1, const Fraction& f2) { return !(operator==(f1, f2)); }
+	//perform criss/cross multiplication before comparison
+	friend bool operator<  (const Fraction& f1, const Fraction& f2) { return (f1.m_numerator * f2.m_denominator) < (f2.m_numerator * f1.m_denominator); }
+	//convert sign and order or parameters
+	friend bool operator>  (const Fraction& f1, const Fraction& f2) { return   operator<(f2, f1); }
+	//convert signs, not order of parameters
+	friend bool operator<= (const Fraction& f1, const Fraction& f2) { return !(operator>(f1, f2)); }
+	friend bool operator>= (const Fraction& f1, const Fraction& f2) { return !(operator<(f1, f2)); }
 
-    double getX() const { return m_x; }
-    double getY() const { return m_y; }
-    double getZ() const { return m_z; }
 };
 
-// Convert a Point into its negative equivalent
-Point Point::operator- () const
+std::ostream& operator<<(std::ostream& out, const Fraction& f1)
 {
-    return { -m_x, -m_y, -m_z };
-}
-
-// Return true if the point is set at the origin, false otherwise
-bool Point::operator! () const
-{
-    return (m_x == 0.0 && m_y == 0.0 && m_z == 0.0);
-}
-
-////Returns the point as it is
-Point Point::operator+() const
-{
-    return Point{ m_x, m_y, m_z };
+	out << f1.m_numerator << '/' << f1.m_denominator;
+	return out;
 }
 
 int main()
 {
-    Point point{}; // use default constructor to set to (0.0, 0.0, 0.0)
+	Fraction f1{ 3, 2 };
+	Fraction f2{ 5, 8 };
 
-    if (!point)
-        std::cout << "point is set at the origin.\n";
-    else
-        std::cout << "point is not set at the origin.\n";
-
-    return 0;
+	std::cout << f1 << ((f1 == f2) ? " == " : " not == ") << f2 << '\n';
+	std::cout << f1 << ((f1 != f2) ? " != " : " not != ") << f2 << '\n';
+	std::cout << f1 << ((f1 < f2) ? " < " : " not < ") << f2 << '\n';
+	std::cout << f1 << ((f1 > f2) ? " > " : " not > ") << f2 << '\n';
+	std::cout << f1 << ((f1 <= f2) ? " <= " : " not <= ") << f2 << '\n';
+	std::cout << f1 << ((f1 >= f2) ? " >= " : " not >= ") << f2 << '\n';
+	return 0;
 }
