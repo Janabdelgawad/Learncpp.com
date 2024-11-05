@@ -1,63 +1,51 @@
-#include <algorithm>
-#include <iostream>
 #include <string>
 #include <vector>
+#include <iostream>
 
-class Car
+struct StudentGrade
 {
-private:
-    std::string m_make;
-    std::string m_model;
-
-public:
-    Car(std::string_view make, std::string_view model)
-        : m_make{ make }, m_model{ model }
-    {
-    }
-
-    friend bool operator== (const Car& c1, const Car& c2);
-    friend bool operator!= (const Car& c1, const Car& c2);
-
-    friend std::ostream& operator<< (std::ostream& out, const Car& c)
-    {
-        out << '(' << c.m_make << ", " << c.m_model << ")";
-        return out;
-    }
-
-    friend bool operator<(const Car& c1, const Car& c2)
-    {
-        //if the car isn't the same
-        if (c1.m_make != c2.m_make)
-            return c1.m_make < c2.m_make; //compare the MAKE normally
-        return c1.m_model < c2.m_model; // else if they are the same, compare the MODEL
-    }
+	std::string name{};
+	char        grade{};
 };
 
-bool operator== (const Car& c1, const Car& c2)
+class GradeMap
 {
-    return (c1.m_make == c2.m_make &&
-        c1.m_model == c2.m_model);
-}
+private:
+	std::vector<StudentGrade> m_map{};
 
-bool operator!= (const Car& c1, const Car& c2)
+public:
+	char& operator[](std::string_view name);
+};
+
+char& GradeMap::operator[](std::string_view name)
 {
-    return (c1.m_make != c2.m_make ||
-        c1.m_model != c2.m_model);
+	auto found
+	{ std::find_if
+		(m_map.begin(), m_map.end(),
+		[name](const auto& student)
+		{return (student.name == name); }
+		)
+	};
+
+	if (found != m_map.end())
+	{
+		return found->grade;
+	}
+
+	m_map.push_back(StudentGrade{ std::string{name} });
+	
+	return m_map.back().grade;
 }
 
 int main()
 {
-    std::vector<Car> cars{
-      { "Toyota", "Corolla" },
-      { "Honda", "Accord" },
-      { "Toyota", "Camry" },
-      { "Honda", "Civic" }
-    };
+	GradeMap grades{};
 
-    std::sort(cars.begin(), cars.end()); // requires an overloaded operator<
+	grades["Joe"] = 'A';
+	grades["Frank"] = 'B';
 
-    for (const auto& car : cars)
-        std::cout << car << '\n'; // requires an overloaded operator<<
+	std::cout << "Joe has a grade of " << grades["Joe"] << '\n';
+	std::cout << "Frank has a grade of " << grades["Frank"] << '\n';
 
-    return 0;
+	return 0;
 }
