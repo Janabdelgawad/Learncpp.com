@@ -1,89 +1,58 @@
 #include <iostream>
-#include <numeric> // for std::gcd
 
-class Fraction
+class Point
 {
 private:
-	int m_numerator{};
-	int m_denominator{};
+    double m_x{};
+    double m_y{};
+    double m_z{};
 
 public:
-	Fraction(int numerator = 0, int denominator = 1) :
-		m_numerator{ numerator }, m_denominator{ denominator }
-	{
-		// We put reduce() in the constructor to ensure any new fractions we make get reduced!
-		// Any fractions that are overwritten will need to be re-reduced
-		reduce();
-	}
+    Point(double x = 0.0, double y = 0.0, double z = 0.0) :
+        m_x{ x }, m_y{ y }, m_z{ z }
+    {
+    }
 
-	void reduce()
-	{
-		int gcd{ std::gcd(m_numerator, m_denominator) };
-		if (gcd)
-		{
-			m_numerator /= gcd;
-			m_denominator /= gcd;
-		}
-	}
+    // Convert a Point into its negative equivalent
+    Point operator- () const;
 
-	friend Fraction operator*(const Fraction& f1, const Fraction& f2);
-	friend Fraction operator*(const Fraction& f1, int value);
-	friend Fraction operator*(int value, const Fraction& f1);
+    // Return true if the point is set at the origin
+    bool operator! () const;
 
-	void print() const
-	{
-		std::cout << m_numerator << '/' << m_denominator << '\n';
-	}
+    //returns the Point as it is
+    Point operator+ () const;
 
-	friend std::ostream& operator<< (std::ostream& out, const Fraction& f);
+    double getX() const { return m_x; }
+    double getY() const { return m_y; }
+    double getZ() const { return m_z; }
 };
 
-Fraction operator*(const Fraction& f1, const Fraction& f2)
+// Convert a Point into its negative equivalent
+Point Point::operator- () const
 {
-	return Fraction{ f1.m_numerator * f2.m_numerator, f1.m_denominator * f2.m_denominator };
+    return { -m_x, -m_y, -m_z };
 }
 
-Fraction operator*(const Fraction& f1, int value)
+// Return true if the point is set at the origin, false otherwise
+bool Point::operator! () const
 {
-	return Fraction{ f1.m_numerator * value, f1.m_denominator };
+    return (m_x == 0.0 && m_y == 0.0 && m_z == 0.0);
 }
 
-Fraction operator*(int value, const Fraction& f1)
+////Returns the point as it is
+Point Point::operator+() const
 {
-	return Fraction{ f1.m_numerator * value, f1.m_denominator };
-}
-
-std::ostream& operator<< (std::ostream& out, const Fraction& f)
-{
-    out << f.m_numerator << '/' << f.m_denominator;
-    return out;
-}
-
-std::istream& operator>> (std::istream& in, Fraction& f)
-{
-    int numerator{ 0 };
-	char ignore{};
-    int denominator{ 1 };
-
-    in >> numerator >> ignore >> denominator;
-
-    if (in)
-        f = Fraction{ numerator, denominator };
-
-    return in;
+    return Point{ m_x, m_y, m_z };
 }
 
 int main()
 {
-	Fraction f1{};
-	std::cout << "Enter fraction 1: ";
-	std::cin >> f1;
+    Point point{}; // use default constructor to set to (0.0, 0.0, 0.0)
 
-	Fraction f2{};
-	std::cout << "Enter fraction 2: ";
-	std::cin >> f2;
+    if (!point)
+        std::cout << "point is set at the origin.\n";
+    else
+        std::cout << "point is not set at the origin.\n";
 
-	std::cout << f1 << " * " << f2 << " is " << f1 * f2 << '\n'; // note: The result of f1 * f2 is an r-value
-
-	return 0;
+    return 0;
 }
