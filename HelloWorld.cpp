@@ -1,41 +1,54 @@
-#include <string>
-#include <cassert>
+#include <cstdint>
 #include <iostream>
-class MyString
+class Average
 {
 private:
-	std::string m_word{};
+	std::int32_t m_total{ 0 };
+	int			 m_numbers{ 0 };
 public:
-	MyString(std::string_view string = {})
-		:m_word{ string }{}
-
-	std::string_view operator()(int start, int length)
+	Average(){}
+	friend std::ostream& operator<<(std::ostream& out, const Average& avg);
+	Average& operator+=(std::int32_t num)
 	{
-		assert(start >= 0);
-		assert(start + length <= static_cast<int>(m_word.length()) &&
-		"MyString::operator(int, int): Substring is out of range");
-
-		return
-		{
-			std::string_view{ m_word }.substr(
-			static_cast<std::string::size_type>(start),
-			static_cast<std::string::size_type>(length)
-		) };
-
-	}
-
-	friend std::ostream& operator<<(std::ostream& out, const MyString& s)
-	{
-		out << s.m_word;
-		return out;
+		m_total += num;
+		++m_numbers;
+		return *this;
 	}
 };
 
+std::ostream& operator<<(std::ostream& out, const Average& avg)
+{
+	if (avg.m_numbers == 0)
+	{
+		out << 0;
+		return out;
+	}
+	out << static_cast<double>(avg.m_total)/avg.m_numbers;
+	return out;
+}
+
 int main()
 {
-	MyString s{ "Hello, world!" };
-	std::cout << s(7, 5) << '\n'; // start at index 7 and return 5 characters
+	Average avg{};
+	std::cout << avg << '\n';
+
+	avg += 4;
+	std::cout << avg << '\n'; // 4 / 1 = 4
+
+	avg += 8;
+	std::cout << avg << '\n'; // (4 + 8) / 2 = 6
+
+	avg += 24;
+	std::cout << avg << '\n'; // (4 + 8 + 24) / 3 = 12
+
+	avg += -10;
+	std::cout << avg << '\n'; // (4 + 8 + 24 - 10) / 4 = 6.5
+
+	(avg += 6) += 10; // 2 calls chained together
+	std::cout << avg << '\n'; // (4 + 8 + 24 - 10 + 6 + 10) / 6 = 7
+
+	Average copy{ avg };
+	std::cout << copy << '\n';
 
 	return 0;
 }
-
