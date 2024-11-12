@@ -1,54 +1,99 @@
-#include <cstdint>
 #include <iostream>
-class Average
+#include <cassert>
+class IntArray
 {
 private:
-	std::int32_t m_total{ 0 };
-	int			 m_numbers{ 0 };
+	int m_size{0};
+	int* L{ nullptr };
+
 public:
-	Average(){}
-	friend std::ostream& operator<<(std::ostream& out, const Average& avg);
-	Average& operator+=(std::int32_t num)
+	explicit IntArray(int size) : m_size{size}
 	{
-		m_total += num;
-		++m_numbers;
+		assert(size > 0 && "Invalid input");
+		L = new int[static_cast<std::size_t>(m_size)]{};
+	};
+
+	//copy constructor that does deep copying
+	IntArray(const IntArray& array) : m_size{ array.m_size }
+	{
+		L = new int[static_cast<std::size_t>(m_size)] {};
+		for (int count{ 0 }; count < array.m_size; ++count)
+			L[count] = array.L[count];
+	}
+
+	~IntArray()
+	{
+		delete[] L;
+	}
+
+	friend std::ostream& operator<<(std::ostream& out, const IntArray& size);
+
+	int& operator[] (const int index)
+	{
+		assert(index >= 0);
+		assert(index < m_size);
+		return L[index];
+	}
+
+	IntArray& operator= (const IntArray& array)
+	{
+		// self-assignment guard
+		if (this == &array)
+			return *this;
+
+		// If this array already exists, delete it so we don't leak memory
+		delete[] L;
+
+		m_size = array.m_size;
+
+		// Allocate a new array
+		L = new int[static_cast<std::size_t>(m_size)] {};
+
+		// Copy elements from original array to new array
+		for (int count{ 0 }; count < array.m_size; ++count)
+			L[count] = array.L[count];
+
 		return *this;
 	}
 };
 
-std::ostream& operator<<(std::ostream& out, const Average& avg)
+std::ostream& operator<<(std::ostream& out, const IntArray& f)
 {
-	if (avg.m_numbers == 0)
+	for (int count{ 0 }; count < f.m_size; ++count)
 	{
-		out << 0;
-		return out;
+		out << f.L[count] << ' ';
 	}
-	out << static_cast<double>(avg.m_total)/avg.m_numbers;
 	return out;
+}
+
+IntArray fillArray()
+{
+	IntArray a(5);
+
+	a[0] = 5;
+	a[1] = 8;
+	a[2] = 2;
+	a[3] = 3;
+	a[4] = 6;
+
+	return a;
 }
 
 int main()
 {
-	Average avg{};
-	std::cout << avg << '\n';
+	IntArray a{ fillArray() };
 
-	avg += 4;
-	std::cout << avg << '\n'; // 4 / 1 = 4
+	std::cout << a << '\n';
 
-	avg += 8;
-	std::cout << avg << '\n'; // (4 + 8) / 2 = 6
+	auto& ref{ a }; // we're using this reference to avoid compiler self-assignment errors
+	a = ref;
 
-	avg += 24;
-	std::cout << avg << '\n'; // (4 + 8 + 24) / 3 = 12
+	IntArray b(1);
+	b = a;
 
-	avg += -10;
-	std::cout << avg << '\n'; // (4 + 8 + 24 - 10) / 4 = 6.5
+	a[4] = 7;
 
-	(avg += 6) += 10; // 2 calls chained together
-	std::cout << avg << '\n'; // (4 + 8 + 24 - 10 + 6 + 10) / 6 = 7
-
-	Average copy{ avg };
-	std::cout << copy << '\n';
+	std::cout << b << '\n';
 
 	return 0;
 }
