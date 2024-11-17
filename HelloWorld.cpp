@@ -1,35 +1,22 @@
 #include <iostream>
-#include <memory>
-class Fraction
+#include <memory> // for std::shared_ptr
+
+class Resource
 {
-private:
-	int m_numerator{ 0 };
-	int m_denominator{ 1 };
-
 public:
-	Fraction(int numerator = 0, int denominator = 1) :
-		m_numerator{ numerator }, m_denominator{ denominator }
-	{
-	}
+	//used weak_ptr instead of the shared_ptr so that the m_ptr wont keep the resource alive
+	std::weak_ptr<Resource> m_ptr{}; // initially created empty
 
-	friend std::ostream& operator<<(std::ostream& out, const Fraction& f1)
-	{
-		out << f1.m_numerator << '/' << f1.m_denominator;
-		return out;
-	}
+	Resource() { std::cout << "Resource acquired\n"; }
+	~Resource() { std::cout << "Resource destroyed\n"; }
 };
 
-void printFraction(const Fraction* ptr)
-{
-	if (ptr)
-		std::cout << *ptr << '\n';
-	else
-		std::cout << "No fraction\n";
-}
 
 int main()
 {
-	auto ptr{ std::make_unique<Fraction>(3, 5) };
-	printFraction(ptr.get());
+	auto ptr1{ std::make_shared<Resource>() };
+
+	ptr1->m_ptr = ptr1; // m_ptr is now sharing the Resource that contains it
+
 	return 0;
 }
