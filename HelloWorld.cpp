@@ -1,22 +1,65 @@
 #include <iostream>
-#include <memory> // for std::shared_ptr
-
-class Resource
+#include <vector>
+#include <functional> 
+#include <string>
+#include <string_view>
+class Teacher
 {
+private: 
+    std::string m_name{};
 public:
-	//used weak_ptr instead of the shared_ptr so that the m_ptr wont keep the resource alive
-	std::weak_ptr<Resource> m_ptr{}; // initially created empty
+    Teacher(std::string_view name) : m_name{ name } {}
 
-	Resource() { std::cout << "Resource acquired\n"; }
-	~Resource() { std::cout << "Resource destroyed\n"; }
+    const std::string& getName() const { return m_name; }
 };
 
+class Department
+{
+private:
+    std::vector<std::reference_wrapper<const Teacher>> m_teachers{};
+public:
+    Department() = default;
+
+    void add(const Teacher& teacher)
+    {
+        m_teachers.emplace_back(teacher);
+    }
+
+    friend std::ostream& operator<<(std::ostream& out,const Department& dep)
+    {
+        out << "Department: ";
+
+        for (const auto& teacher : dep.m_teachers)
+            out << teacher.get().getName() << ' ';
+
+        out << '\n';
+
+        return out;
+    }
+};
 
 int main()
 {
-	auto ptr1{ std::make_shared<Resource>() };
+    // Create a teacher outside the scope of the Department
+    Teacher t1{ "Bob" };
+    Teacher t2{ "Frank" };
+    Teacher t3{ "Beth" };
 
-	ptr1->m_ptr = ptr1; // m_ptr is now sharing the Resource that contains it
+    {
+        // Create a department and add some Teachers to it
+        Department department{}; // create an empty Department
 
-	return 0;
+        department.add(t1);
+        department.add(t2);
+        department.add(t3);
+
+        std::cout << department;
+
+    } // department goes out of scope here and is destroyed
+
+    std::cout << t1.getName() << " still exists!\n";
+    std::cout << t2.getName() << " still exists!\n";
+    std::cout << t3.getName() << " still exists!\n";
+
+    return 0;
 }
