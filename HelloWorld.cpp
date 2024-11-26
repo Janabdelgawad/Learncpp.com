@@ -1,65 +1,67 @@
 #include <iostream>
-#include <vector>
-#include <functional> 
-#include <string>
-#include <string_view>
-class Teacher
-{
-private: 
-    std::string m_name{};
-public:
-    Teacher(std::string_view name) : m_name{ name } {}
-
-    const std::string& getName() const { return m_name; }
-};
-
-class Department
+#include <array>
+#include <algorithm>
+#include <cassert>
+class IntArray
 {
 private:
-    std::vector<std::reference_wrapper<const Teacher>> m_teachers{};
+	int m_length{};
+	int* m_data{};
 public:
-    Department() = default;
+	//constructors
+	IntArray() = default;
+	IntArray(int length) : m_length{ length }, m_data{new int[static_cast<std::size_t>(length)]} {}
+	IntArray(std::initializer_list<int> list) : IntArray(static_cast<int>(list.size()))
+	{
+		std::copy(list.begin(), list.end(), m_data);
+	}
+	~IntArray() { delete[] m_data; }
 
-    void add(const Teacher& teacher)
-    {
-        m_teachers.emplace_back(teacher);
-    }
+	//deleted constructor & overloaded assignment operator (shallow copies)
+	IntArray(const IntArray&) = delete;
+	IntArray& operator=(const IntArray& list) = delete;
 
-    friend std::ostream& operator<<(std::ostream& out,const Department& dep)
-    {
-        out << "Department: ";
+	//overloaded operators
+	int& operator[](int& index)
+	{
+		assert(index >= 0 && index < m_length);
+		return m_data[index];
+	}
 
-        for (const auto& teacher : dep.m_teachers)
-            out << teacher.get().getName() << ' ';
+	IntArray& operator=(std::initializer_list<int> list)
+	{
+		//reallocate list, if unequal list sizes
+		int length{ static_cast<int>(list.size()) };
+		if (length != m_length)
+		{
+			delete[] m_data;
+			m_length = length;
+			m_data = new int[list.size()] {};
+		}
 
-        out << '\n';
+		//intialize array from old array
+		std::copy(list.begin(), list.end(), m_data);
 
-        return out;
-    }
+		return *this;
+	}
+	//access functions
+	int getLength() const { return m_length; }
 };
-
+//overloaded assignment operator that takes an initializer list.
 int main()
 {
-    // Create a teacher outside the scope of the Department
-    Teacher t1{ "Bob" };
-    Teacher t2{ "Frank" };
-    Teacher t3{ "Beth" };
+	IntArray array{ 5, 4, 3, 2, 1 }; // initializer list
+	for (int count{ 0 }; count < array.getLength(); ++count)
+		std::cout << array[count] << ' ';
 
-    {
-        // Create a department and add some Teachers to it
-        Department department{}; // create an empty Department
+	std::cout << '\n';
 
-        department.add(t1);
-        department.add(t2);
-        department.add(t3);
+	array = { 1, 3, 5, 7, 9, 11 };
 
-        std::cout << department;
+	for (int count{ 0 }; count < array.getLength(); ++count)
+		std::cout << array[count] << ' ';
 
-    } // department goes out of scope here and is destroyed
+	std::cout << '\n';
 
-    std::cout << t1.getName() << " still exists!\n";
-    std::cout << t2.getName() << " still exists!\n";
-    std::cout << t3.getName() << " still exists!\n";
-
-    return 0;
+	return 0;
 }
