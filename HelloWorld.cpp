@@ -1,67 +1,62 @@
+/*
+Create a Fruit base class that contains two private members:
+a name (std::string), and a color (std::string).
+
+Create an Apple class that inherits Fruit.
+Apple should have an additional private member:
+fiber (double). 
+
+Create a Banana class that also inherits Fruit.
+Banana has no additional members.
+*/
 #include <iostream>
-#include <array>
-#include <algorithm>
-#include <cassert>
-class IntArray
+#include <string>
+#include <string_view>
+class Fruit
 {
 private:
-	int m_length{};
-	int* m_data{};
+	std::string m_name;
+	std::string m_color;
 public:
-	//constructors
-	IntArray() = default;
-	IntArray(int length) : m_length{ length }, m_data{new int[static_cast<std::size_t>(length)]} {}
-	IntArray(std::initializer_list<int> list) : IntArray(static_cast<int>(list.size()))
-	{
-		std::copy(list.begin(), list.end(), m_data);
-	}
-	~IntArray() { delete[] m_data; }
-
-	//deleted constructor & overloaded assignment operator (shallow copies)
-	IntArray(const IntArray&) = delete;
-	IntArray& operator=(const IntArray& list) = delete;
-
-	//overloaded operators
-	int& operator[](int& index)
-	{
-		assert(index >= 0 && index < m_length);
-		return m_data[index];
-	}
-
-	IntArray& operator=(std::initializer_list<int> list)
-	{
-		//reallocate list, if unequal list sizes
-		int length{ static_cast<int>(list.size()) };
-		if (length != m_length)
-		{
-			delete[] m_data;
-			m_length = length;
-			m_data = new int[list.size()] {};
-		}
-
-		//intialize array from old array
-		std::copy(list.begin(), list.end(), m_data);
-
-		return *this;
-	}
-	//access functions
-	int getLength() const { return m_length; }
+	Fruit(std::string_view name,std::string_view color) : m_name{name}, m_color{color} {}
+	const std::string& getName()  const { return m_name; }
+	const std::string& getColor() const { return m_color; }
 };
-//overloaded assignment operator that takes an initializer list.
+
+class Apple : public Fruit
+{
+private:
+	double m_fiber{};
+public:
+	Apple(std::string_view name, std::string_view color, double fiber) : Fruit{name, color}, m_fiber{fiber}{}
+	double getFiber() const { return m_fiber; }
+};
+
+std::ostream& operator<<(std::ostream& out, const Apple& a)
+{
+	out << "Apple(" << a.getName() << ", " << a.getColor() << ", " << a.getFiber() << ')';
+	return out;
+}
+
+class Banana : public Fruit
+{
+public:
+	Banana(std::string_view name, std::string_view color) : Fruit{ name, color } {};
+};
+
+std::ostream& operator<<(std::ostream& out, const Banana& b)
+{
+	out << "Banana(" << b.getName() << ", " << b.getColor() << ')';
+	return out;
+}
+
 int main()
 {
-	IntArray array{ 5, 4, 3, 2, 1 }; // initializer list
-	for (int count{ 0 }; count < array.getLength(); ++count)
-		std::cout << array[count] << ' ';
+	const Apple a{ "Red delicious", "red", 4.2 };
+	std::cout << a << '\n';
 
-	std::cout << '\n';
-
-	array = { 1, 3, 5, 7, 9, 11 };
-
-	for (int count{ 0 }; count < array.getLength(); ++count)
-		std::cout << array[count] << ' ';
-
-	std::cout << '\n';
+	const Banana b{ "Cavendish", "yellow" };
+	std::cout << b << '\n';
 
 	return 0;
 }
