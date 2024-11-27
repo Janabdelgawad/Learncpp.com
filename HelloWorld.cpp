@@ -1,45 +1,61 @@
 #include <iostream>
-class Fruit
+#include<cassert>
+
+class Creature
 {
-private:
+protected:
 	std::string m_name;
-	std::string m_color;
+	char        m_symbol;
+	int         m_health;
+	int         m_damage;
+	int         m_gold;
 public:
-	Fruit(std::string_view name, std::string_view color) : m_name{name}, m_color{color} {}
-	const std::string& getName() const { return m_name; }
-	const std::string& getColor() const { return m_color; }
+	Creature(std::string_view name, char symbol, int health, int damage, int gold) :
+		m_name{name}, m_symbol{}, m_health{health}, m_damage{damage}, m_gold{gold} {}
+
+	//access functions
+	const std::string& getName()   const { return m_name; }
+	char         getSymbol() const { return m_symbol; }
+	int          getHealth() const { return m_health; }
+	int          getDamage() const { return m_damage; }
+	int          getGold()   const { return m_gold; }
+
+	void reduceHealth(int health) {m_health -= health;}
+	void addGold(int gold)        { m_gold += gold; }
+	bool isDead() const           { return m_health <= 0; }
 };
 
-class Apple : public Fruit
+
+class Player : public Creature
 {
-protected: // protected so only derived classes can access
-	Apple(std::string_view name, std::string_view color): Fruit{ name, color }{}
+	int m_level;
 public:
-	Apple(std::string_view color = "red") : Fruit{ "apple", color} {}
+	Player(std::string_view name) :
+		Creature{ name, '@', 10, 1, 0 }{}
 
+	void levelUp()
+	{
+		++m_level;
+		++m_damage;
+	}
+	int getLevel() const { return m_level; }
+	bool hasWon() const { return m_level >= 20; }
 };
-
-class Banana : public Fruit
+/*
+class Monster : public Creature
 {
-public: 
-	Banana() : Fruit{ "banana", "yellow"} {}
-};
 
-class GrannySmith : public Apple
-{
-public:
-	GrannySmith() : Apple{"granny smith apple", "green"} {}
 };
-
+*/
 int main()
 {
-	Apple a{ "red" };
-	Banana b;
-	GrannySmith c;
+	std::cout << "Enter your name: ";
+	std::string playerName;
+	std::cin >> playerName;
 
-	std::cout << "My " << a.getName() << " is " << a.getColor() << ".\n";
-	std::cout << "My " << b.getName() << " is " << b.getColor() << ".\n";
-	std::cout << "My " << c.getName() << " is " << c.getColor() << ".\n";
+	Player p{ playerName };
+	std::cout << "Welcome, " << p.getName() << ".\n";
+	std::cout << "You have " << p.getHealth() << " health and are carrying " << p.getGold() << " gold.\n";
 
 	return 0;
 }
