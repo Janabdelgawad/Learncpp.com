@@ -1,34 +1,45 @@
 #include <iostream>
-template <typename T, typename S>
-class Pair
+#include <stdexcept>
+
+class Fraction
 {
 private:
-	T m_x{};
-	S m_y{};
-
+	int m_num{};
+	int m_den{};
 public:
-	Pair(const T& x, const S& y)
-		: m_x{ x }, m_y{ y }
+	Fraction(int num = 0, int den = 1) 
+		: m_num{num}, m_den{den} 
 	{
+		if (den == 0) throw std::runtime_error("Invalid denominator");
 	}
-
-	T& first() { return m_x; }
-	S& second() { return m_y; }
-	const T& first() const { return m_x; }
-	const S& second() const { return m_y; }
+	friend std::ostream& operator<<(std::ostream& out, const Fraction& f1);
 };
 
-template <typename S>
-class StringValuePair : public Pair<std::string, S>
+std::ostream& operator<<(std::ostream& out, const Fraction& f1)
 {
-public:
-	StringValuePair(std::string_view key, const S& value)
-		: Pair<std::string, S>{static_cast<std::string>(key), value} {}
-};
+	out << f1.m_num << '/' << f1.m_den;
+	return out;
+}
+
 int main()
 {
-	StringValuePair<int> svp{ "Hello", 5 };
-	std::cout << "Pair: " << svp.first() << ' ' << svp.second() << '\n';
+	std::cout << "Enter the numerator: ";
+	int num{};
+	std::cin >> num;
+
+	std::cout << "Enter the denominator: ";
+	int den{};
+	std::cin >> den;
+
+	try
+	{
+		Fraction fraction{num, den};
+		std::cout << "Your fraction is: " << fraction;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
 
 	return 0;
 }
