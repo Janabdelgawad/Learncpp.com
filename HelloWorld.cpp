@@ -1,45 +1,33 @@
 #include <iostream>
-#include <stdexcept>
-
-class Fraction
+class Tile
 {
 private:
-	int m_num{};
-	int m_den{};
+    int m_num{0};
 public:
-	Fraction(int num = 0, int den = 1) 
-		: m_num{num}, m_den{den} 
-	{
-		if (den == 0) throw std::runtime_error("Invalid denominator");
-	}
-	friend std::ostream& operator<<(std::ostream& out, const Fraction& f1);
+    Tile() = default;
+    explicit Tile(int num) : m_num{num} {}
+    int getNum () const { return m_num; }
+    bool isEmpty() const { return m_num == 0; }
 };
-
-std::ostream& operator<<(std::ostream& out, const Fraction& f1)
+std::ostream& operator<<(std::ostream& out, Tile tile)
 {
-	out << f1.m_num << '/' << f1.m_den;
-	return out;
+    if (tile.getNum() > 9) out << ' ' << tile.getNum() << ' ';
+    else if (tile.getNum() > 0) out << "  " << tile.getNum() << "  ";
+    else if (tile.getNum() == 0) out << "    ";
+    return out;
 }
-
 int main()
 {
-	std::cout << "Enter the numerator: ";
-	int num{};
-	std::cin >> num;
+    Tile tile1{ 10 };
+    Tile tile2{ 8 };
+    Tile tile3{ 0 }; // the missing tile
+    Tile tile4{ 1 };
 
-	std::cout << "Enter the denominator: ";
-	int den{};
-	std::cin >> den;
+    std::cout << "0123456789ABCDEF\n"; // to make it easy to see how many spaces are in the next line
+    std::cout << tile1 << tile2 << tile3 << tile4 << '\n';
 
-	try
-	{
-		Fraction fraction{num, den};
-		std::cout << "Your fraction is: " << fraction;
-	}
-	catch (const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
+    std::cout << std::boolalpha << tile1.isEmpty() << ' ' << tile3.isEmpty() << '\n';
+    std::cout << "Tile 2 has number: " << tile2.getNum() << "\nTile 4 has number: " << tile4.getNum() << '\n';
 
-	return 0;
+    return 0;
 }
