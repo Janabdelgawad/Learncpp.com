@@ -1,33 +1,76 @@
 #include <iostream>
-class Tile
-{
-private:
-    int m_num{0};
-public:
-    Tile() = default;
-    explicit Tile(int num) : m_num{num} {}
-    int getNum () const { return m_num; }
-    bool isEmpty() const { return m_num == 0; }
-};
-std::ostream& operator<<(std::ostream& out, Tile tile)
-{
-    if (tile.getNum() > 9) out << ' ' << tile.getNum() << ' ';
-    else if (tile.getNum() > 0) out << "  " << tile.getNum() << "  ";
-    else if (tile.getNum() == 0) out << "    ";
-    return out;
+#include <string>
+#include <fstream>
+
+void registerUser() {
+	std::cout << "Enter Username: ";
+	std::string username{};
+	std::cin >> username;
+
+	std::cout << "\nEnter Password: ";
+	std::string password{};
+	std::cin >> password;
+
+	//open file in append mode so new users wouldnt overwrite existing ones
+	std::ofstream file("users.txt", std::ios::app);
+
+	if (file.is_open()) {
+		file << username << " " << password << '\n';
+		file.close();
+		std::cout << "User registered successfully!\n";
+	} else {
+		std::cout << "Error: Couldn't open the file.\n";
+	}
 }
-int main()
-{
-    Tile tile1{ 10 };
-    Tile tile2{ 8 };
-    Tile tile3{ 0 }; // the missing tile
-    Tile tile4{ 1 };
 
-    std::cout << "0123456789ABCDEF\n"; // to make it easy to see how many spaces are in the next line
-    std::cout << tile1 << tile2 << tile3 << tile4 << '\n';
+bool logUser(const std::string& username, const std::string& password){
+	std::ifstream file("users.txt");
+	std::string storedUsername, storedPassword;
 
-    std::cout << std::boolalpha << tile1.isEmpty() << ' ' << tile3.isEmpty() << '\n';
-    std::cout << "Tile 2 has number: " << tile2.getNum() << "\nTile 4 has number: " << tile4.getNum() << '\n';
+	if (!file.is_open()) {
+		std::cout << "Error: Could not open file.\n";
+		return false;
+	}
+	while (file >> storedUsername >> storedPassword) {
+		if (storedUsername == username && storedPassword == password) {
+			file.close();
+			return true;
+		}
 
-    return 0;
+	}
+  file.close();
+  return false;
+}
+
+void handleLogin() {
+	std::string username, password;
+
+	std::cout << "Enter Username: ";
+	std::cin >> username;
+
+	std::cout << "Enter Password: ";
+	std::cin >> password;
+
+	if(logUser(username, password)) { std::cout << "Login successful! Welcome, " << username << "!\n"; }
+	else { std::cout << "Invalid username or password. Try again.\n"; }
+}
+
+void showMenu() {
+	int choice;
+	std::string username, password;
+
+	while (true) {
+		std::cout << "\n1. Register\n2. Login\n3. Exit\nChoose an option: ";
+		std::cin >> choice;
+
+		if (choice == 1) { registerUser(); }
+		else if (choice == 2) { handleLogin(); }
+		else if (choice == 3) { std::cout << "Exiting program...\n"; break; }
+		else { std::cout << "Invalid choice. please enter 1,2, or 3.\n"; }
+	}
+}
+
+int main() {
+	showMenu();
+	return 0;
 }

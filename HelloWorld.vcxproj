@@ -159,6 +159,9 @@
   <ItemGroup>
     <ClInclude Include="Random.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="users.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
